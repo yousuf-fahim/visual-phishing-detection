@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Visual Phishing Detection: slides</title>
+<!-- Six 16:9 slides. Print to PDF (docs/pdf/slides.pdf); every number comes from results/ (see docs/report.md). -->
+<style>
+  @page { size: 13.333in 7.5in; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: #1b1f27; background: #fff; }
+  .slide { width: 13.333in; height: 7.5in; padding: 0.55in 0.7in; page-break-after: always; position: relative; overflow: hidden; }
+  .slide:last-child { page-break-after: auto; }
+  h1 { font-size: 34pt; margin: 0 0 0.15in; line-height: 1.1; }
+  h2 { font-size: 26pt; margin: 0 0 0.25in; color: #1f3f7a; }
+  p, li { font-size: 15pt; line-height: 1.4; }
+  ul { margin: 0; padding-left: 0.3in; }
+  li { margin-bottom: 0.08in; }
+  .kicker { font-size: 12pt; letter-spacing: 0.08em; text-transform: uppercase; color: #6a7285; margin-bottom: 0.1in; }
+  .footer { position: absolute; bottom: 0.3in; left: 0.7in; right: 0.7in; font-size: 10pt; color: #8a90a0; display: flex; justify-content: space-between; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45in; align-items: start; }
+  .cols-60 { display: grid; grid-template-columns: 1.35fr 1fr; gap: 0.4in; align-items: start; }
+  img { max-width: 100%; display: block; }
+  .big { font-size: 44pt; font-weight: 700; color: #1f3f7a; line-height: 1; }
+  .bad { color: #b03a2e; }
+  .good { color: #2e7d4f; }
+  .callout { background: #f1f4fa; border-left: 5px solid #1f3f7a; padding: 0.15in 0.25in; font-size: 15pt; margin-top: 0.2in; }
+  table { border-collapse: collapse; width: 100%; font-size: 14pt; }
+  th, td { border-bottom: 1px solid #d5d9e2; padding: 0.07in 0.1in; text-align: left; }
+  th { color: #6a7285; font-weight: 600; }
+  td.num { font-variant-numeric: tabular-nums; }
+  tr.best td { font-weight: 700; background: #eef6f0; }
+  .title-slide { background: #1f3f7a; color: #fff; display: flex; flex-direction: column; justify-content: center; }
+  .title-slide h1 { font-size: 40pt; color: #fff; }
+  .title-slide p { color: #d6def0; font-size: 17pt; }
+  .small { font-size: 11pt; color: #6a7285; }
+</style>
+</head>
+<body>
+
+<section class="slide title-slide">
+  <div class="kicker" style="color:#aebbd8">Neural Network Lab, CSE, BUBT</div>
+  <h1>Does a Screenshot Classifier<br>Really See Phishing?</h1>
+  <p>A generalization and shortcut study on Phish360 (2020-23) and Phish-IRIS (2018)</p>
+  <p style="margin-top:0.5in">Yousuf Sharif Fahim<br><span style="font-size:13pt">Live demo: yousuf-fahim.github.io/visual-phishing-detection</span></p>
+</section>
+
+<section class="slide">
+  <div class="kicker">1 · Problem and questions</div>
+  <h2>Phishing pages copy how brands look. Can a CNN tell?</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li><b>RQ1</b> Screenshot vs URL features: does fusing both help?</li>
+        <li><b>RQ2</b> Does it hold up on another dataset and era?</li>
+        <li><b>RQ3</b> Does it hold up on other languages?</li>
+        <li><b>RQ4</b> What does it actually look at? Shortcuts?</li>
+        <li><b>RQ5</b> (stretch) Which brand is being imitated?</li>
+      </ul>
+    </div>
+    <div>
+      <table>
+        <tr><th>Dataset</th><th>Samples</th><th>Content</th></tr>
+        <tr><td>Phish360</td><td class="num">10,748</td><td>URL + HTML + screenshot, 46 brands</td></tr>
+        <tr><td>Phish-IRIS</td><td class="num">2,849</td><td>Screenshots, 14 brands + other</td></tr>
+      </table>
+      <div class="callout">Not a new architecture: Phish360's authors already published a multimodal detector (CrossPhire). Our contribution is <b>measuring generalization and shortcuts</b>.</div>
+    </div>
+  </div>
+  <div class="footer"><span>Visual phishing detection</span><span>results/phase1/dataset_summary.json</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">2 · Doing the data right</div>
+  <h2>Leakage and shortcuts, measured before any CNN</h2>
+  <div class="cols-60">
+    <div>
+      <img src="../results/phase1/shortcut_features.png" alt="Trivial statistics by label">
+      <p class="small">Phish360: file size, whiteness and colour by label. Legitimate = busy homepages, phishing = sparse login forms.</p>
+    </div>
+    <div>
+      <p><b>Leakage:</b> the official split puts near-duplicates of <b>15.5%</b> of test pages in training, so we used our own grouped splits (pHash + domain), with 0 groups crossing.</p>
+      <p><b>Shortcut floor:</b> a model on trivial statistics alone reaches</p>
+      <p><span class="big">0.853</span> <span style="font-size:15pt">ROC-AUC on Phish360</span></p>
+      <p><span class="big bad">0.995</span> <span style="font-size:15pt">on Phish-IRIS</span></p>
+    </div>
+  </div>
+  <div class="footer"><span>Visual phishing detection</span><span>results/phase1/leakage_report.json, shortcut_check.json</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">3 · Main result (RQ1)</div>
+  <h2>Screenshot ≈ URL. Together is clearly best.</h2>
+  <div class="cols-60">
+    <div>
+      <table>
+        <tr><th>Phish360 test (n = 1,590)</th><th>ROC-AUC</th><th>Caught at 1% false alarms</th></tr>
+        <tr><td>Trivial statistics only</td><td class="num">0.853</td><td class="num">19%</td></tr>
+        <tr><td>URL features (LightGBM)</td><td class="num">0.961</td><td class="num">59%</td></tr>
+        <tr><td>Screenshot (MobileNetV3)</td><td class="num">0.967</td><td class="num">47%</td></tr>
+        <tr><td>Early fusion</td><td class="num">0.983</td><td class="num">70%</td></tr>
+        <tr class="best"><td>Late fusion (average)</td><td class="num">0.984</td><td class="num">77%</td></tr>
+      </table>
+      <div class="callout">The two models make <b>different mistakes</b>, so fusion catches far more phishing at a strict false-alarm budget.</div>
+    </div>
+    <div>
+      <img src="../results/phase4/ablation.png" alt="Fusion ablation">
+      <p class="small">Validation, mean ± std over 3 seeds.</p>
+    </div>
+  </div>
+  <div class="footer"><span>Visual phishing detection</span><span>results/final_in_distribution.csv</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">4 · What it actually learned (RQ4)</div>
+  <h2>It learned "sparse login page", not "fake brand"</h2>
+  <div class="cols-60">
+    <div>
+      <img src="../results/phase7/gradcam_mean.png" alt="Mean Grad-CAM">
+      <p class="small">Mean Grad-CAM over all test pages: on phishing pages, attention sits below the form, not on the logo.</p>
+    </div>
+    <div>
+      <p>Where the shortcut points the wrong way:</p>
+      <p><span class="big">0.967</span> → <span class="big bad">0.809</span></p>
+      <ul>
+        <li>False alarms = <b>real login pages</b></li>
+        <li>Misses = <b>clones of busy homepages</b></li>
+        <li>Live check: genuine GitHub, Google, Microsoft, PayPal and Facebook login pages score <b class="bad">97.6-99.95%</b>; Wikipedia, BBC and BUBT score <b class="good">0%</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><span>Visual phishing detection</span><span>results/phase5/final_shortcut_hard.csv, results/phase7/, results/phase8/legit_pages_scores.csv</span></div>
+</section>
+
+<section class="slide">
+  <div class="kicker">5 · Generalization (RQ2-3) and takeaways</div>
+  <h2>Under shift: ranking survives, strict detection halves</h2>
+  <div class="cols-60">
+    <div>
+      <img src="../results/phase5/generalization.png" alt="Generalization">
+    </div>
+    <div>
+      <table>
+        <tr><th>Screenshot model</th><th>ROC-AUC</th></tr>
+        <tr><td>In distribution</td><td class="num">0.967</td></tr>
+        <tr><td>Phish360 → Phish-IRIS</td><td class="num">0.931</td></tr>
+        <tr><td>Phish-IRIS → Phish360</td><td class="num">0.910</td></tr>
+        <tr><td>English → non-English</td><td class="num">0.940</td></tr>
+      </table>
+      <div class="callout"><b>Takeaways:</b> screenshots are a useful <i>complement</i> to URLs, not a standalone detector. Benchmarks need legitimate <b>login</b> pages and shortcut baselines.</div>
+    </div>
+  </div>
+  <div class="footer"><span>Visual phishing detection</span><span>results/phase5/cross_dataset.csv, cross_language.csv</span></div>
+</section>
+
+</body>
+</html>

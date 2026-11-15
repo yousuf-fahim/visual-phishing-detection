@@ -16,3 +16,4 @@ models/*
 results/**/logs/
 results/**/*.npy
 results/**/*.log
+test-images/

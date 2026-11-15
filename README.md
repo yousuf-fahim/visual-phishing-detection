@@ -4,7 +4,7 @@ Neural Network lab project (CSE, BUBT). Can a CNN detect phishing pages from scr
 URL features and their fusion, does it hold up on another dataset or another language, and **what is it actually
 looking at?**
 
-Full write-up: [docs/report.md](docs/report.md) (PDF: [docs/report.pdf](docs/report.pdf)).
+Full write-up: [docs/report.md](docs/report.md). Printable PDFs in [docs/pdf/](docs/pdf/): report, slides, viva cheat sheet, learning log, decisions, generalization findings.
 Viva notes: [docs/viva-cheatsheet.md](docs/viva-cheatsheet.md) and [docs/learning-log.md](docs/learning-log.md).
 
 > Research prototype, not a security product. Phish360's authors have published their own multimodal detector
@@ -49,9 +49,15 @@ Brand identification on Phish-IRIS: 15-class accuracy 0.872, macro-F1 0.802; uns
 
 ## Demo
 
-A static, in-browser demo lives in [web/](web/): the screenshot never leaves the device. Its JavaScript preprocessing is bit-identical
-to training. Build and deploy steps are in [docs/DEPLOY.md](docs/DEPLOY.md) (Cloudflare Pages or GitHub Pages).
-**Demo link: not deployed yet** (pending; see docs/DEPLOY.md).
+**Try it: https://yousuf-fahim.github.io/visual-phishing-detection/** (drag a screenshot onto the page).
+
+A static, in-browser demo: the screenshot never leaves the device. Its JavaScript preprocessing is bit-identical
+to training. Source in [web/](web/), deploy steps in [docs/DEPLOY.md](docs/DEPLOY.md).
+
+A quick live check on genuine websites ([results/phase8/legit_pages_scores.csv](results/phase8/legit_pages_scores.csv)):
+content-rich pages (Wikipedia in English and Bengali, BBC News, python.org, the BUBT homepage) score 0%, but the
+**real login pages of GitHub, Google, Microsoft, PayPal and Facebook all score 97.6-99.95% "phishing-like"**.
+That is the report's shortcut finding in action.
 
 ## How to reproduce
 

@@ -1,0 +1,12 @@
+file,width,height,phishing_likeness,model_says
+01_wikipedia_neural_network.png,1280,960,0.0,looks legitimate
+02_wikipedia_bengali_dhaka.png,1280,960,0.0,looks legitimate
+03_bbc_news_home.png,1280,960,0.0,looks legitimate
+04_python_org_home.png,1280,960,0.0,looks legitimate
+05_github_home.png,1280,960,0.8959,looks like phishing
+06_bubt_home.png,1280,960,0.0,looks legitimate
+07_login_github.png,1280,960,0.9969,looks like phishing
+08_login_google.png,1280,960,0.9758,looks like phishing
+09_login_microsoft.png,1280,960,0.9904,looks like phishing
+10_login_paypal.png,1280,960,0.9995,looks like phishing
+11_login_facebook.png,1280,960,0.9796,looks like phishing

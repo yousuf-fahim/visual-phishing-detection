@@ -69,6 +69,10 @@ A screenshot CNN (MobileNetV3) detects phishing on Phish360 about as well as URL
 20. **What are the ethics and safety measures?**
     Only downloaded datasets; no live phishing URL was visited or rendered. URLs and HTML were treated as untrusted text. No raw screenshots or URLs are published, the demo has no phishing examples, and it states it is not a security product.
 
+**Bonus: Can you show it?** Yes: https://yousuf-fahim.github.io/visual-phishing-detection/ with the images in `test-images/`.
+Wikipedia, BBC and the BUBT homepage score 0%, while the *genuine* GitHub, Google, Microsoft, PayPal and Facebook login pages score
+97.6-99.95%. That is the shortcut, live. Say it before they do: "This is why it must be combined with the URL."
+
 **Bonus: What would you do next?** Add legitimate *login* pages to training and test data (the key missing piece), dated samples for a real cross-time test, an adversarial evaluation, and a logo-vs-domain consistency check like Phishpedia's.
 
 ## 5-slide outline (about 7 minutes)
@@ -77,4 +81,4 @@ A screenshot CNN (MobileNetV3) detects phishing on Phish360 about as well as URL
 2. **Doing the data right.** The official split leaks 15.5%, so we used grouped splits. Trivial statistics reach 0.853 / 0.995 (show `results/phase1/shortcut_features.png`). This sets the floor.
 3. **Main result (RQ1).** The test table: URL 0.961, image 0.967, late fusion 0.984. TPR@1%FPR rises from 47-59% to 77% (show `results/phase4/ablation.png`).
 4. **What it actually learned (RQ4).** Shortcut-hard pages: 0.967 to 0.809. Grad-CAM mean maps and the error examples: legitimate login pages flagged, homepage clones missed (show `results/phase7/gradcam_mean.png`).
-5. **Generalization and takeaways (RQ2-3).** Cross-dataset 0.931 / 0.910, non-English 0.940, TPR halves (show `results/phase5/generalization.png`). Takeaway: screenshots complement URLs; benchmarks need legitimate login pages and shortcut baselines. Demo link, if deployed.
+5. **Generalization and takeaways (RQ2-3).** Cross-dataset 0.931 / 0.910, non-English 0.940, TPR halves (show `results/phase5/generalization.png`). Takeaway: screenshots complement URLs; benchmarks need legitimate login pages and shortcut baselines. Live demo: drop a Wikipedia page (0%), then the real PayPal login (99.95%).

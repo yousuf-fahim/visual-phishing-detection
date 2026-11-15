@@ -28,12 +28,14 @@ detection rate under dataset or language shift.
 1. **Review the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (168 blank screenshots
    excluded), Q6 (folder name as label), Q9 (Phish-IRIS "other" = legitimate; the Phish-IRIS paper describes it as
    legitimate samples), Q10 (Phish-IRIS cropped to 4:3). Each entry says how to change it.
-2. **Review and merge the GitHub pull requests** at https://github.com/yousuf-fahim/visual-phishing-detection/pulls (private repo; PRs #1-#10 are stacked: merge #1 first, then #2, and so on. Each PR targets the previous phase's branch, and GitHub retargets the next one to main as you merge). There is no CI configured, so there are no checks to wait for.
-3. **Deploy the demo (optional):** follow `docs/DEPLOY.md`. The quickest route is Cloudflare Pages: upload the contents of `web/dist`
-   after `cd web && npm install && npm run build`. Then put the link in README.md (the "Demo link" line).
-4. **Optional demo gallery:** capture screenshots of legitimate pages yourself (a Wikipedia article, your university homepage,
-   a news front page, and a real bank or webmail *login* page to show the main weakness). Details are in docs/DEPLOY.md.
-5. **Read before the viva:** `docs/learning-log.md` (top to bottom), `docs/viva-cheatsheet.md`, `docs/report.pdf`.
+2. **Review and merge the GitHub pull requests** at https://github.com/yousuf-fahim/visual-phishing-detection/pulls.
+   The repo is now **public**. PRs **#11-#20** are stacked: merge #11 first, then #12, and so on. Each PR targets the previous phase's branch, and GitHub
+   retargets the next one to main as you merge. (#1-#10 were auto-closed when the commits were rewritten to your GitHub
+   noreply email before going public.) No CI is configured, so there are no checks to wait for.
+3. **Demo is live:** https://yousuf-fahim.github.io/visual-phishing-detection/ (GitHub Pages, `gh-pages` branch). Test it with the
+   images in `test-images/` (11 genuine pages, with expected scores and a "how to present" guide in `test-images/README.md`).
+4. **Printable documents** are in `docs/pdf/`: report, slides, viva cheat sheet, learning log, decisions, and generalization findings.
+5. **Read before the viva:** `docs/pdf/learning-log.pdf` (top to bottom), `docs/pdf/viva-cheatsheet.pdf`, `docs/pdf/report.pdf`, and practise with `docs/pdf/slides.pdf`.
 
 ### Things I'd double-check
 
@@ -57,14 +59,14 @@ detection rate under dataset or language shift.
 | 5 Final + generalization | Done: see table above and docs/findings-phase5.md |
 | 6 Brand ID (optional) | Done |
 | 7 Explainability | Done: results/error_analysis.md, results/phase7/ |
-| 8 Demo (optional) | Done: web/, bit-exact preprocessing, browser self-tests pass; not deployed (your step) |
-| 9 Report | Done: docs/report.md, docs/report.pdf, docs/viva-cheatsheet.md, README.md |
+| 8 Demo (optional) | Done: web/, bit-exact preprocessing, browser self-tests pass; live on GitHub Pages (self-test passes on the live site) |
+| 9 Report | Done: docs/report.md, docs/pdf/report.pdf, docs/viva-cheatsheet.md, README.md |
 
 ## Git
 
 Local branches, one per phase, each built on the previous one: `main` (Phase 0), then `docs/onedrive-note`,
 `feat/phase-1-data-audit`, `feat/phase-2-url-baseline`, `feat/phase-3-image-models`, `feat/phase-4-fusion`,
 `feat/phase-5-final-generalization`, `feat/phase-6-brand-id`, `feat/phase-7-explainability`, `feat/phase-8-static-demo`,
-and `docs/phase-9-report`. The Phish-IRIS addition is a commit on the Phase 3 branch. Pushed to a private GitHub repo with one PR per branch.
+and `docs/phase-9-report`. The Phish-IRIS addition is a commit on the Phase 3 branch. Pushed to the GitHub repo (public since 16 Nov 2026, commits use the GitHub noreply email) with one PR per branch. `docs/demo-deploy-and-pdfs` adds the deployment notes, PDFs and `src/score_images.py`.
 data/, model checkpoints and per-screenshot images are git-ignored. `data/raw/phish360` and `data/raw/phish-iris` are the only copies of the
 datasets (the Downloads copies were deleted at your request).

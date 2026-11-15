@@ -152,6 +152,12 @@ On Phish-IRIS, a fine-tuned MobileNetV3 over 15 classes reaches test accuracy **
 ## 7. Demo
 
 A static web page (`web/`) runs the screenshot model in the browser with onnxruntime-web. The image never leaves the device, and the page's Content-Security-Policy blocks external requests. The model's browser preprocessing is a line-by-line port of Pillow's Lanczos resampling, and is bit-identical to the training pipeline on 23 test images (`results/phase8/parity_test.txt`). End-to-end self-tests pass in headless Edge and Chrome. Int8 quantisation was rejected because validation ROC-AUC fell from 0.964 to 0.633 (`results/phase8/export_check.json`). The page states that it is a research prototype and lists the limitations above.
+It is deployed at https://yousuf-fahim.github.io/visual-phishing-detection/.
+
+As a small live check, we captured 11 genuine web pages at 1280x960 (`results/phase8/legit_pages_scores.csv`). Five content-rich pages
+(Wikipedia in English and Bengali, BBC News, python.org, the BUBT homepage) score 0.000, the sparse GitHub homepage scores 0.896,
+and **all five genuine login pages (GitHub, Google, Microsoft, PayPal, Facebook) score between 0.976 and 0.9995**. This is the
+shortcut of Section 6 seen outside the dataset: the model flags "login page", not "phishing". (This is an illustration on 11 pages, not an evaluation.)
 
 ## 8. Limitations
 
