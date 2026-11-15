@@ -11,3 +11,5 @@ web/dist/
 models/*.pt
 models/*.onnx
 results/**/screenshots/
+models/*
+!models/.gitkeep
