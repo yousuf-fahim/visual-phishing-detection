@@ -1,0 +1,42 @@
+{
+  "phish360": {
+    "n": 10748,
+    "phishing_fraction": 0.4031,
+    "single_feature_auc": {
+      "width": 0.4967,
+      "height": 0.4959,
+      "aspect": 0.5022,
+      "file_kb": 0.2066,
+      "mean_r": 0.6653,
+      "mean_g": 0.6578,
+      "mean_b": 0.6685,
+      "white_frac": 0.666,
+      "gray_std": 0.3312
+    },
+    "logistic_regression": {
+      "roc_auc": 0.7732,
+      "f1": 0.6393,
+      "precision": 0.6934,
+      "recall": 0.593,
+      "tpr_at_1pct_fpr": 0.1325
+    },
+    "lightgbm": {
+      "roc_auc": 0.8499,
+      "f1": 0.7308,
+      "precision": 0.8163,
+      "recall": 0.6616,
+      "tpr_at_1pct_fpr": 0.2597
+    },
+    "lightgbm_without_filesize_whiteness": {
+      "roc_auc": 0.7862,
+      "f1": 0.6533,
+      "precision": 0.7535,
+      "recall": 0.5766,
+      "tpr_at_1pct_fpr": 0.181
+    },
+    "near_blank_screenshots": {
+      "phish": 110,
+      "legit": 6
+    }
+  }
+}
