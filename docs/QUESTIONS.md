@@ -50,3 +50,9 @@ Each entry: what came up, the options, what I chose, and how to change it.
 ## Note: 10 HTML files missing
 
 10 legitimate `RAW-HTML/index.html` files vanished from both the Downloads copy and data/raw shortly after extraction (probably antivirus). Their screenshots, URLs and labels are intact, and they're flagged in `index.csv` (`html_present=False`). Only HTML-based analysis is affected.
+
+## Q8 (Phase 2): URL features that are dataset artifacts (a finding)
+
+- `has_www` is the top LightGBM feature (26% of gain): 71% of legitimate URLs start with `www.`, vs 14% of phishing. That reflects how the legitimate list was collected (top-site domains), not a property of phishing. TLD is skewed the same way (`.cz`, `.de`, `.ro` appear almost only as legitimate), and `is_root_path` is the homepage confound from Q7.
+- Removing all of them drops LightGBM from ROC-AUC 0.970 to 0.943, and TPR@1%FPR from 0.63 to 0.53 (`results/phase2/metrics_summary.csv`). The URL baseline stays strong without them.
+- **Chose:** keep the full feature set as the main URL baseline (matching the literature), and report the `no_suspected_artifacts` variant next to it in RQ1. The fusion phase uses both variants, so it can be checked for leaning on the artifacts.

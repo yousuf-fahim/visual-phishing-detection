@@ -33,3 +33,17 @@ Our machine has no NVIDIA GPU, so PyTorch runs on the CPU. Training a CNN from s
 1. *Why not a random split?* Near-duplicate copies would sit on both sides and inflate test scores. Grouping by pHash cluster and domain gives zero groups across splits (`results/phase1/splits_summary.json`).
 2. *Your images could be classified by file size. Doesn't that invalidate the study?* It sets a floor: trivial features reach AUC 0.85, so an image model is only interesting if it clearly beats that, especially on the "shortcut-hard" subset. Measuring this is itself part of RQ4.
 3. *What is a perceptual hash?* A 64-bit fingerprint of an image's coarse brightness pattern. Visually similar images get fingerprints differing in only a few bits, unlike a cryptographic hash, where one pixel changes everything.
+
+## Phase 2: URL-feature baseline (2026-11-15)
+
+**What we did.** Extracted 29 lexical features from each URL string (lengths, character ratios, subdomains, entropy, suspicious words, TLD, and so on; never fetching anything), and trained logistic regression, LightGBM and a small PyTorch MLP on the grouped train split. Evaluated on validation only, with 3 seeds (`src/url_features.py`, `src/train_url.py`, `results/phase2/`).
+
+**Why.** RQ1 asks whether screenshots beat URLs, so we need a strong, honest URL baseline first.
+
+**Key concept: dataset artifacts in features.**
+A feature can predict the label without being a real phishing signal, if it reflects *how the data was collected*. Here the strongest feature is `has_www`: legitimate URLs come from a list of popular sites written as `www.example.com`, while phishing URLs come from phishing feeds. A real attacker can trivially add `www.`, so a model leaning on it would be easy to fool. We tested this with an **ablation**, removing the suspect features and retraining. Result: LightGBM goes from ROC-AUC 0.970 to 0.943, and TPR@1%FPR from 0.63 to 0.53. Some of the score was artifact, most was genuine (suspicious words, dots, hyphens, entropy). `is_https` turned out *not* to be an artifact here (40% vs 43%).
+
+**Likely faculty questions.**
+1. *Why is TPR at 1% FPR so much lower than ROC-AUC suggests?* AUC averages over all thresholds. At the strict operating point a real deployment needs (1 legit site in 100 flagged), only about 63% of phishing is caught.
+2. *Your top feature is 'has www'. Isn't that suspicious?* Yes, and we say so. Removing it alone costs almost nothing, because correlated features take over. Removing every suspected artifact costs about 0.03 AUC, and we report both versions.
+3. *Why use an MLP on tabular features at all?* As a neural baseline for a Neural Network lab. On about 30 tabular features it ties LightGBM (0.971 vs 0.970), which is the usual finding: trees match or beat neural nets on small tabular data.
