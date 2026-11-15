@@ -81,3 +81,17 @@ Fusion only helps if the two models get *different* examples wrong. Here they cl
 1. *Is multimodal fusion your contribution?* No. Phish360's authors already published a multimodal method (CrossPhire). This is a reproduction-scale ablation; our contribution is the generalization and shortcut analysis.
 2. *Why does a simple average beat a learned fusion network?* The learned one is trained on features that look more reliable on training data than they are (the memorisation effect), and averaging has nothing to overfit.
 3. *What happens if an attacker serves a blank page to the screenshotter?* Late fusion falls back to the URL score (0.970). Early fusion drops to 0.918. That's an argument for late fusion in a deployed system.
+
+## Phase 5: Final test and generalization (2026-11-16)
+
+**What we did.** Opened the Phish360 test split once (`src/evaluate.py`), with 95% bootstrap confidence intervals. Then tested generalization (`src/generalization.py`): train on one dataset, test on the other; train on English pages, test on other languages. Full write-up: `docs/findings-phase5.md`.
+
+**Results.** Test ROC-AUC: late fusion 0.984 (TPR@1%FPR 0.77), image 0.967 (0.47), URL 0.961 (0.59), trivial floor 0.853. On the 288 "shortcut-hard" pages the image model falls to 0.809. Cross-dataset, the image model drops to 0.931 / 0.910. On non-English pages, an English-trained image model drops to 0.940 while the URL model doesn't drop.
+
+**Key concept: the test set is used once, and confidence intervals.**
+Every choice we made (model, threshold, fusion type) was made on validation. If we peeked at the test set and changed something, the test score would stop being an honest estimate of performance on new data. A *bootstrap confidence interval* shows how much a score could move with a different sample of test pages: resample the test set with replacement 1,000 times, recompute the metric each time, and take the middle 95%. Two models whose intervals overlap heavily (image 0.959-0.974 vs URL 0.952-0.969) aren't reliably different, while late fusion (0.978-0.989) clearly beats both.
+
+**Likely faculty questions.**
+1. *Your image model scores 0.967. Why should we believe it understands phishing?* We shouldn't fully: on pages where the density shortcut points the wrong way, it drops to 0.809. We report that openly (RQ4).
+2. *Why did you not test across time?* Phish360 has no per-sample dates. The only time contrast available is 2018 (Phish-IRIS) vs 2020-23 (Phish360), and that mixes time with different label definitions.
+3. *Why does the URL model not suffer on other languages?* URL features are character statistics and words like "login", which barely depend on the page's language. The screenshot is full of language-specific text.

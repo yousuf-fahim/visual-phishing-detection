@@ -17,8 +17,9 @@ Last updated: 2026-11-15 (autopilot run).
 | 2 URL baseline | Done: LightGBM val ROC-AUC 0.970, TPR@1%FPR 0.63 (0.943 / 0.53 without artifact features) |
 | 3 Image models | Done: fine-tuned MobileNetV3 val ROC-AUC 0.967 ± 0.003 (3 seeds) |
 | 4 Fusion | Done: late fusion val ROC-AUC 0.989, TPR@1%FPR 0.81 (URL 0.63, image 0.57) |
-| 5 Final + generalization | Next |
-| 6-9 | Not started |
+| 5 Final + generalization | Done: test late fusion 0.984; image 0.809 on shortcut-hard pages; cross-dataset 0.91-0.93; non-English 0.940 (see docs/findings-phase5.md) |
+| 6 Brand ID (optional) | Next |
+| 7-9 | Not started |
 
 ## Phase 1 headline facts (from results/phase1/)
 

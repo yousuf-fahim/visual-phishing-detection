@@ -43,10 +43,13 @@ METRICS = ["precision", "recall", "f1", "roc_auc", "tpr_at_1pct_fpr"]
 
 # ---------- image side ----------
 
-def load_image_model(seed: int) -> TimmBinary:
+def load_image_model(seed: int, run_prefix: str = "") -> TimmBinary:
+    """Load a fine-tuned MobileNetV3 checkpoint, e.g. models/img_mobilenetv3_full_s42.pt,
+    or with run_prefix='phish-iris-all-' models/img_phish-iris-all-mobilenetv3_full_s42.pt."""
     # Same architecture as in training; our fine-tuned weights then overwrite the ImageNet ones.
     model = TimmBinary("mobilenetv3_small_100.lamb_in1k")
-    model.load_state_dict(torch.load(f"models/img_mobilenetv3_full_s{seed}.pt", weights_only=True))
+    path = f"models/img_{run_prefix}mobilenetv3_full_s{seed}.pt"
+    model.load_state_dict(torch.load(path, weights_only=True))
     return model.eval()
 
 
