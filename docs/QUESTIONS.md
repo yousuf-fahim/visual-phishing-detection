@@ -26,7 +26,7 @@ Each entry: what came up, the options, what I chose, and how to change it.
 
 ## Q4 (Phase 1, PROVISIONAL): own grouped split instead of Phish360's official trainval/test
 
-- **What came up:** the official Phish360 test split leaks. 429 of 2,771 test samples (15.5%) share a leakage group with trainval: 78 have a near-duplicate screenshot there and 356 share a registered domain (`results/phase1/leakage_report.json`).
+- **What came up:** the official Phish360 test split leaks. 429 of 2,771 test samples (15.5%) share a leakage group with trainval: 80 have a near-duplicate screenshot there and 356 share a registered domain (`results/phase1/leakage_report.json`).
 - **Options:** (a) keep the official split (comparable to the paper, but leaky); (b) official test minus the leaked samples; (c) our own grouped 70/15/15 over all 10,748 samples.
 - **Chose:** (c), as the Phase 1 prompt asks: `src/make_splits.py`, seed 42, zero groups crossing splits. The official split is kept as the `official_split` column of `index.csv`, so (a) or (b) can be reported as a side result.
 - **To change:** in `make_splits.py`, replace `assign_splits` with the official column (mapping trainval to train/val with a grouped cut).

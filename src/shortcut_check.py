@@ -105,11 +105,12 @@ def main() -> None:
     pd.concat(oof_frames).to_csv("data/processed/shortcut_oof.csv", index=False)
     print(json.dumps(results, indent=2))
 
-    # Distributions of the most telling features, by label
+    # Distributions of the most telling features, by label (Phish360 only, as the title says)
+    p360 = df[df.dataset == "phish360"]
     fig, axes = plt.subplots(1, 4, figsize=(18, 4))
     for ax, f in zip(axes, ["file_kb", "white_frac", "gray_std", "mean_g"]):
         for lab, color, txt in [(0, "#4C72B0", "legitimate"), (1, "#DD8452", "phishing")]:
-            vals = df.loc[df.label_binary == lab, f]
+            vals = p360.loc[p360.label_binary == lab, f]
             if f == "file_kb":
                 vals = np.log10(vals.clip(lower=1))
             ax.hist(vals, bins=60, alpha=0.6, color=color, label=txt, density=True)

@@ -1,0 +1,4 @@
+model,threshold,TP,FP,TN,FN
+image_only,0.5,555,41,919,75
+url_only:full,0.5,525,74,886,105
+late_fusion:full,0.5,579,25,935,51

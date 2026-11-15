@@ -7,7 +7,7 @@ region shares are in `results/phase7/screenshots/gradcam_examples.csv`, which is
 Sample IDs are Phish360's own IDs. **No URLs or domains are listed, on purpose.**
 
 At threshold 0.5, the image model makes 41 false positives and 75 false negatives. Late fusion with the URL model
-reduces that to 25 and 51.
+reduces that to 25 and 51 (`results/phase7/confusion_counts.csv`).
 
 ## Top false positives (legitimate pages flagged as phishing)
 
