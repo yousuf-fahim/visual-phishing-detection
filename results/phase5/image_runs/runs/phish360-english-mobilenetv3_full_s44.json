@@ -1,0 +1,18 @@
+{
+  "run": "phish360-english-mobilenetv3_full_s44",
+  "dataset": "phish360",
+  "subset": "english",
+  "model": "mobilenetv3",
+  "training": "fine-tuned",
+  "variant": "full",
+  "seed": 44,
+  "params": 1518881,
+  "best_epoch": 2,
+  "epochs_run": 6,
+  "train_seconds": 316,
+  "precision": 0.9190600522193212,
+  "recall": 0.8186046511627907,
+  "f1": 0.8659286592865929,
+  "roc_auc": 0.9591556012031399,
+  "tpr_at_1pct_fpr": 0.5581395348837209
+}
