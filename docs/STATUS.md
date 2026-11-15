@@ -1,6 +1,6 @@
 # Status
 
-**BLOCKED at the start of Phase 1: the datasets are not in data/raw/.**
+**WAITING at the start of Phase 1: datasets are downloading. data/raw/ is checked every 15 minutes, and Phase 1 starts automatically once the download is stable.**
 Last updated: 2026-11-15 (autopilot run).
 
 ## What you need to do (then restart autopilot)
@@ -10,7 +10,7 @@ Last updated: 2026-11-15 (autopilot run).
 2. Download **Phish-IRIS** from https://web.cs.hacettepe.edu.tr/~selman/phish-iris-dataset/
    (or Mendeley Data, DOI 10.17632/tk4fkswtj5.1) and extract it into `data/raw/phish-iris/`.
    The folder names are a suggestion: Phase 1 inspects whatever layout it finds.
-3. Read `docs/QUESTIONS.md` (3 decisions made without you, all easy to reverse).
+3. Read `docs/QUESTIONS.md` (decisions made without you, all easy to reverse).
 4. Run `claude` in this folder and paste: `Read AUTOPILOT.md and follow it exactly. Continue from docs/STATUS.md (Phase 1).`
 
 ## Phase progress
