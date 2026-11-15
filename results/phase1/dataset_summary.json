@@ -1,4 +1,49 @@
 {
+  "phish-iris": {
+    "samples": 2849,
+    "by_official_split_and_label": {
+      "test/legit": 998,
+      "test/phish": 539,
+      "train/legit": 399,
+      "train/phish": 913
+    },
+    "phishing_fraction": 0.5097,
+    "brands_known": 1452,
+    "n_brands": 14,
+    "corrupt_or_missing_images": 0,
+    "missing_html": 2849,
+    "label_txt_empty": 0,
+    "label_txt_disagrees_nonempty": 0,
+    "empty_url": 2849,
+    "empty_registered_domain": 2849,
+    "unique_registered_domains": 1,
+    "width_counts_top5": {
+      "1024": 1388,
+      "1268": 207,
+      "1280": 203,
+      "1251": 148,
+      "1536": 104
+    },
+    "height_counts_top5": {
+      "1024": 1172,
+      "855": 286,
+      "960": 204,
+      "768": 140,
+      "679": 103
+    },
+    "size_by_label_median": {
+      "legit": {
+        "width": 1024.0,
+        "height": 1024.0,
+        "file_kb": 252.8
+      },
+      "phish": {
+        "width": 1268.0,
+        "height": 887.0,
+        "file_kb": 102.7
+      }
+    }
+  },
   "phish360": {
     "samples": 10748,
     "by_official_split_and_label": {

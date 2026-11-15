@@ -2,14 +2,35 @@
   "seed": 42,
   "groups_crossing_splits": 0,
   "registered_domains_crossing_splits": 0,
+  "cross_dataset_duplicates": {
+    "phish-iris": 208,
+    "phish360": 247
+  },
   "excluded": {
-    "near_blank": 116
+    "near_blank": 168
   },
   "excluded_by_label": {
-    "phish": 110,
-    "legit": 6
+    "phish": 155,
+    "legit": 13
   },
   "after_exclusion": {
+    "phish-iris": {
+      "test": {
+        "n": 425,
+        "share": 0.1519,
+        "phishing_fraction": 0.5106
+      },
+      "train": {
+        "n": 1957,
+        "share": 0.6997,
+        "phishing_fraction": 0.5028
+      },
+      "val": {
+        "n": 415,
+        "share": 0.1484,
+        "phishing_fraction": 0.4964
+      }
+    },
     "phish360": {
       "test": {
         "n": 1590,
