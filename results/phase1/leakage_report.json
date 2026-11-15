@@ -1,19 +1,53 @@
 {
   "hamming_max_bits": 6,
-  "near_duplicate_pairs": 890,
-  "samples": 10748,
-  "phash_clusters": 10044,
-  "samples_in_multi_member_phash_clusters": 1192,
-  "phash_clusters_with_both_labels": 21,
-  "samples_in_mixed_label_phash_clusters": 104,
-  "leakage_groups": 8401,
-  "samples_in_multi_member_groups": 3347,
+  "near_duplicate_pairs": 2010,
+  "samples": 13597,
+  "phash_clusters": 12207,
+  "samples_in_multi_member_phash_clusters": 2266,
+  "phash_clusters_with_both_labels": 32,
+  "samples_in_mixed_label_phash_clusters": 202,
+  "leakage_groups": 10692,
+  "samples_in_multi_member_groups": 4289,
   "largest_phash_clusters": [
     {
-      "size": 20,
+      "size": 38,
+      "labels": {
+        "phish": 37,
+        "legit": 1
+      },
+      "top_domains": {
+        "": 9,
+        "qeren.biz": 2,
+        "kensonsitepcrepair.com": 2
+      },
+      "top_brands": {
+        "paypal": 13,
+        "google": 3,
+        "office": 3
+      }
+    },
+    {
+      "size": 30,
+      "labels": {
+        "phish": 27,
+        "legit": 3
+      },
+      "top_domains": {
+        "": 14,
+        "duckdns.org": 1,
+        "blokkade-digid.xyz": 1
+      },
+      "top_brands": {
+        "amazon": 16,
+        "facebook": 5,
+        "ebay": 1
+      }
+    },
+    {
+      "size": 21,
       "labels": {
         "phish": 16,
-        "legit": 4
+        "legit": 5
       },
       "top_domains": {
         "surveygizmo.com": 4,
@@ -27,37 +61,78 @@
       }
     },
     {
-      "size": 14,
+      "size": 15,
       "labels": {
-        "phish": 13,
-        "legit": 1
+        "phish": 15
       },
       "top_domains": {
-        "kensonsitepcrepair.com": 2,
-        "semprepresenteportal.com": 1,
-        "kdione.com": 1
+        "": 10,
+        "000webhostapp.com": 2,
+        "grrasawstraining.com": 1
       },
       "top_brands": {
-        "paypal": 3,
-        "yahoo": 2,
-        "facebook": 1
+        "adobe": 15
       }
     },
     {
-      "size": 14,
+      "size": 13,
       "labels": {
-        "phish": 13,
+        "phish": 9,
+        "legit": 4
+      },
+      "top_domains": {
+        "": 3,
+        "angelfire.com": 2,
+        "clinicaalexim.com.br": 1
+      },
+      "top_brands": {
+        "natwest": 2,
+        "yahoo": 2,
+        "adobe": 1
+      }
+    },
+    {
+      "size": 13,
+      "labels": {
+        "phish": 12,
         "legit": 1
       },
       "top_domains": {
-        "duckdns.org": 1,
-        "blokkade-digid.xyz": 1,
-        "techlib.cz": 1
+        "": 5,
+        "masterasp.com": 1,
+        "royalrecruiter.com": 1
       },
       "top_brands": {
-        "amazon": 8,
-        "ebay": 1,
-        "facebook": 1
+        "microsoft": 9,
+        "itau": 1,
+        "office": 1
+      }
+    },
+    {
+      "size": 13,
+      "labels": {
+        "phish": 13
+      },
+      "top_domains": {
+        "": 8,
+        "vikingantiques.com": 1,
+        "rak-customs.com": 1
+      },
+      "top_brands": {
+        "microsoft": 8,
+        "office": 5
+      }
+    },
+    {
+      "size": 13,
+      "labels": {
+        "phish": 13
+      },
+      "top_domains": {
+        "": 13
+      },
+      "top_brands": {
+        "facebook": 13
       }
     },
     {
@@ -87,86 +162,6 @@
       "top_brands": {
         "boa": 10,
         "apple": 2
-      }
-    },
-    {
-      "size": 10,
-      "labels": {
-        "phish": 10
-      },
-      "top_domains": {
-        "westnet.com.au": 1,
-        "home.pl": 1,
-        "deckegroup.com": 1
-      },
-      "top_brands": {
-        "paypal": 5,
-        "ebay": 2,
-        "cibc": 1
-      }
-    },
-    {
-      "size": 10,
-      "labels": {
-        "phish": 9,
-        "legit": 1
-      },
-      "top_domains": {
-        "angelfire.com": 2,
-        "clinicaalexim.com.br": 1,
-        "mpaciv.com": 1
-      },
-      "top_brands": {
-        "natwest": 2,
-        "yahoo": 2,
-        "adobe": 1
-      }
-    },
-    {
-      "size": 9,
-      "labels": {
-        "phish": 9
-      },
-      "top_domains": {
-        "appdomain.cloud": 1,
-        "toshveemedialabs.com": 1,
-        "gacconstrutora.com.br": 1
-      },
-      "top_brands": {
-        "linkedin": 5,
-        "paypal": 1,
-        "dropbox": 1
-      }
-    },
-    {
-      "size": 6,
-      "labels": {
-        "phish": 5,
-        "legit": 1
-      },
-      "top_domains": {
-        "nictusa.com": 1,
-        "webnode.com": 1,
-        "zharwalo1.com": 1
-      },
-      "top_brands": {
-        "apple": 2,
-        "facebook": 1,
-        "amazon": 1
-      }
-    },
-    {
-      "size": 6,
-      "labels": {
-        "phish": 6
-      },
-      "top_domains": {
-        "tqcnc.de": 1,
-        "propertyssimo.com": 1,
-        "visitbalbriggan.ie": 1
-      },
-      "top_brands": {
-        "tmobile": 6
       }
     }
   ],
@@ -338,12 +333,12 @@
   "phish360_official_split_leakage": {
     "test_samples": 2771,
     "test_sharing_a_group_with_trainval": 429,
-    "test_with_near_duplicate_screenshot_in_trainval": 78,
+    "test_with_near_duplicate_screenshot_in_trainval": 80,
     "test_with_same_registered_domain_in_trainval": 356,
     "by_label_test_with_near_dup_in_trainval": {
-      "phish": 61,
+      "phish": 63,
       "legit": 17
     }
   },
-  "cross_dataset_shared_phash_clusters": "n/a: only ['phish360'] present"
+  "cross_dataset_shared_phash_clusters": 97
 }

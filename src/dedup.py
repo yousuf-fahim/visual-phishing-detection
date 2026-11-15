@@ -71,11 +71,18 @@ def main() -> None:
         uf_img.union(a, b)
     phash_cluster = np.array([uf_img.find(i) for i in range(n)])
 
-    # 2) leakage groups: pHash links + same registered domain
+    # 2) leakage groups: pHash links + same registered domain, WITHIN one dataset only.
+    #    Splits are made per dataset, so a link to another dataset must not merge two
+    #    groups here (that would reshuffle a dataset's split whenever another dataset is
+    #    added). Cross-dataset duplicates are tracked through phash_cluster instead.
+    ds = idx.dataset.to_numpy()
     uf = UnionFind(n)
     for a, b in pairs:
-        uf.union(a, b)
-    for _, members in idx.groupby("registered_domain").indices.items():
+        if ds[a] == ds[b]:
+            uf.union(a, b)
+    for domain, members in idx.groupby("registered_domain").indices.items():
+        if domain == "":  # no URL known (all of Phish-IRIS): only pHash links apply
+            continue
         for m in members[1:]:
             uf.union(members[0], m)
     group = np.array([uf.find(i) for i in range(n)])

@@ -47,3 +47,9 @@ A feature can predict the label without being a real phishing signal, if it refl
 1. *Why is TPR at 1% FPR so much lower than ROC-AUC suggests?* AUC averages over all thresholds. At the strict operating point a real deployment needs (1 legit site in 100 flagged), only about 63% of phishing is caught.
 2. *Your top feature is 'has www'. Isn't that suspicious?* Yes, and we say so. Removing it alone costs almost nothing, because correlated features take over. Removing every suspected artifact costs about 0.03 AUC, and we report both versions.
 3. *Why use an MLP on tabular features at all?* As a neural baseline for a Neural Network lab. On about 30 tabular features it ties LightGBM (0.971 vs 0.970), which is the usual finding: trees match or beat neural nets on small tabular data.
+
+### Phase 1 addendum: Phish-IRIS added (2026-11-15)
+
+Phish-IRIS (2,849 images, 14 brands plus "other") was indexed and split the same way. Two lessons. First, **trivial features predict Phish-IRIS almost perfectly** (ROC-AUC 0.995): its legitimate images are mostly square JPEGs and its phishing images wide PNGs. Letterboxing keeps the aspect ratio, so the grey band width would still give the label away. Phish-IRIS images are therefore cropped to the same 4:3 browser-viewport shape as Phish360 before resizing. Second, **97 phishing page designs appear in both datasets**, years apart: kits are reused for a long time. Those samples are flagged and kept out of the cross-dataset tests.
+
+*Faculty question: "Isn't Phish-IRIS a standard benchmark? Why distrust it?"* Because a classifier that never looks at page content (only shape, file format and mean colour) already scores 0.995 on it. A high Phish-IRIS score therefore says little about visual phishing cues.

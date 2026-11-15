@@ -1,4 +1,45 @@
 {
+  "phish-iris": {
+    "n": 2849,
+    "phishing_fraction": 0.5097,
+    "single_feature_auc": {
+      "width": 0.7294,
+      "height": 0.2178,
+      "aspect": 0.7995,
+      "file_kb": 0.3057,
+      "mean_r": 0.733,
+      "mean_g": 0.7144,
+      "mean_b": 0.7044,
+      "white_frac": 0.7096,
+      "gray_std": 0.2756,
+      "is_jpeg": 0.2093
+    },
+    "logistic_regression": {
+      "roc_auc": 0.879,
+      "f1": 0.8242,
+      "precision": 0.8368,
+      "recall": 0.812,
+      "tpr_at_1pct_fpr": 0.2397
+    },
+    "lightgbm": {
+      "roc_auc": 0.995,
+      "f1": 0.9624,
+      "precision": 0.9565,
+      "recall": 0.9683,
+      "tpr_at_1pct_fpr": 0.8795
+    },
+    "lightgbm_without_filesize_whiteness": {
+      "roc_auc": 0.9933,
+      "f1": 0.9579,
+      "precision": 0.953,
+      "recall": 0.9628,
+      "tpr_at_1pct_fpr": 0.8602
+    },
+    "near_blank_screenshots": {
+      "phish": 45,
+      "legit": 7
+    }
+  },
   "phish360": {
     "n": 10748,
     "phishing_fraction": 0.4031,
@@ -11,28 +52,29 @@
       "mean_g": 0.6578,
       "mean_b": 0.6685,
       "white_frac": 0.666,
-      "gray_std": 0.3312
+      "gray_std": 0.3312,
+      "is_jpeg": 0.5077
     },
     "logistic_regression": {
-      "roc_auc": 0.7732,
-      "f1": 0.6393,
-      "precision": 0.6934,
-      "recall": 0.593,
-      "tpr_at_1pct_fpr": 0.1325
+      "roc_auc": 0.7762,
+      "f1": 0.6396,
+      "precision": 0.6967,
+      "recall": 0.5912,
+      "tpr_at_1pct_fpr": 0.1452
     },
     "lightgbm": {
       "roc_auc": 0.8499,
-      "f1": 0.7308,
-      "precision": 0.8163,
-      "recall": 0.6616,
-      "tpr_at_1pct_fpr": 0.2597
+      "f1": 0.7295,
+      "precision": 0.8142,
+      "recall": 0.6607,
+      "tpr_at_1pct_fpr": 0.2648
     },
     "lightgbm_without_filesize_whiteness": {
-      "roc_auc": 0.7862,
-      "f1": 0.6533,
-      "precision": 0.7535,
-      "recall": 0.5766,
-      "tpr_at_1pct_fpr": 0.181
+      "roc_auc": 0.7863,
+      "f1": 0.6531,
+      "precision": 0.7502,
+      "recall": 0.5783,
+      "tpr_at_1pct_fpr": 0.1884
     },
     "near_blank_screenshots": {
       "phish": 110,

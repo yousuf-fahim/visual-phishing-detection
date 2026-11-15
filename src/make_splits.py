@@ -54,18 +54,26 @@ def main() -> None:
     for name, d in df.groupby("dataset"):
         df.loc[d.index, "split"] = assign_splits(d.reset_index(drop=True)).to_numpy()
 
-    out = df[["path", "dataset", "split", "group_id", "label_binary", "exclude"]]
+    # Near-duplicates shared ACROSS datasets (same phishing kit in 2018 and 2020-23). Splits are
+    # made per dataset, so these don't leak within a dataset, but a cross-dataset test
+    # (train on one, test on the other) must drop them. Phase 5 uses this flag.
+    datasets_per_cluster = df.groupby("phash_cluster").dataset.nunique()
+    df["cross_dataset_dup"] = df.phash_cluster.map(datasets_per_cluster) > 1
+
+    out = df[["path", "dataset", "split", "group_id", "label_binary", "exclude", "cross_dataset_dup"]]
     out.to_csv("data/processed/splits.csv", index=False)
 
     # ---- checks and summary ----
-    groups_per_split = df.groupby("group_id").split.nunique()
-    assert (groups_per_split == 1).all(), "a leakage group crosses splits!"
-    domains_in_two_splits = int((df.groupby(["dataset", "registered_domain"]).split.nunique() > 1).sum())
+    groups_per_split = df.groupby(["dataset", "group_id"]).split.nunique()
+    assert (groups_per_split == 1).all(), "a leakage group crosses splits within a dataset!"
+    known = df[df.registered_domain != ""]  # Phish-IRIS has no URLs
+    domains_in_two_splits = int((known.groupby(["dataset", "registered_domain"]).split.nunique() > 1).sum())
     used = df[df.exclude == ""]
     summary = {
         "seed": SEED,
         "groups_crossing_splits": int((groups_per_split > 1).sum()),
         "registered_domains_crossing_splits": domains_in_two_splits,
+        "cross_dataset_duplicates": {name: int(d.cross_dataset_dup.sum()) for name, d in df.groupby("dataset")},
         "excluded": df.exclude.value_counts().drop("", errors="ignore").to_dict(),
         "excluded_by_label": {("phish" if k else "legit"): int(v)
                               for k, v in df[df.exclude != ""].label_binary.value_counts().items()},
