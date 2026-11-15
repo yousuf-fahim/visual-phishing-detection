@@ -13,3 +13,4 @@ models/*.onnx
 results/**/screenshots/
 models/*
 !models/.gitkeep
+results/**/logs/
