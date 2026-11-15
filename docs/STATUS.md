@@ -2,22 +2,22 @@
 
 Last updated: 2026-11-15 (autopilot run).
 
-**Phase 1 done for Phish360. Phish-IRIS is still missing**: when it arrives, re-run Phase 1 (parser plus cross-dataset overlap), then continue. Phase 2 done. Moving on to Phase 3 (image models).
+**Phase 1 done for Phish360. Phish-IRIS is still missing**: when it arrives, re-run Phase 1 (parser plus cross-dataset overlap), then continue. 
 
 ## Waiting on Fahim
 
-1. **Phish-IRIS:** download it and tell me the path (or put it in `data/raw/phish-iris/`).
-2. **Verify the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (116 blank screenshots excluded), Q6 (folder name is the label).
+1. **Verify the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (116 blank screenshots excluded), Q6 (folder name is the label), Q9 (Phish-IRIS mapping), Q10 (Phish-IRIS 4:3 crop).
 
 ## Phase progress
 
 | Phase | State |
 |---|---|
 | 0 Setup | Done |
-| 1 Data audit | Done for Phish360 (branch `feat/phase-1-data-audit`); Phish-IRIS parts pending |
+| 1 Data audit | Done for both datasets |
 | 2 URL baseline | Done: LightGBM val ROC-AUC 0.970, TPR@1%FPR 0.63 (0.943 / 0.53 without artifact features) |
-| 3 Image models | Next |
-| 4-9 | Not started |
+| 3 Image models | Done: fine-tuned MobileNetV3 val ROC-AUC 0.967 ± 0.003 (3 seeds) |
+| 4 Fusion | Next |
+| 5-9 | Not started |
 
 ## Phase 1 headline facts (from results/phase1/)
 
@@ -26,5 +26,8 @@ Last updated: 2026-11-15 (autopilot run).
 - Shortcut: trivial image statistics reach ROC-AUC 0.85 (homepage vs login-page confound). This is the floor every image model must beat.
 
 ## Git
+
+At the end of the run: create a **private** GitHub repo (Fahim's request), push `main` and every phase branch, and open PRs for review. data/, screenshots and models/ are never pushed. The Phish360 copies in Downloads were deleted at Fahim's request: `data/raw/phish360` is now the only copy.
+
 
 No remote. Branches are local, one per phase, each built on the previous one: `main` (Phase 0), then `docs/onedrive-note`, then `feat/phase-1-data-audit`.

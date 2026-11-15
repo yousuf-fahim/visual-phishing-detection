@@ -1,0 +1,16 @@
+{
+  "run": "mobilenetv3_top_s42",
+  "model": "mobilenetv3",
+  "training": "fine-tuned",
+  "variant": "top",
+  "seed": 42,
+  "params": 1518881,
+  "best_epoch": 10,
+  "epochs_run": 14,
+  "train_seconds": 1098,
+  "precision": 0.9130434782608695,
+  "recall": 0.7987321711568938,
+  "f1": 0.8520710059171598,
+  "roc_auc": 0.9527056920232435,
+  "tpr_at_1pct_fpr": 0.5150554675118859
+}

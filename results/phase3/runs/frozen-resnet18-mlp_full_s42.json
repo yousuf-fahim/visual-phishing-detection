@@ -1,0 +1,15 @@
+{
+  "run": "frozen-resnet18-mlp_full_s42",
+  "model": "frozen-resnet18-mlp",
+  "training": "frozen backbone + head",
+  "variant": "full",
+  "seed": 42,
+  "params": 11311585,
+  "trainable_params": 131585,
+  "train_seconds": 4,
+  "precision": 0.8790322580645161,
+  "recall": 0.8637083993660856,
+  "f1": 0.8713029576338929,
+  "roc_auc": 0.9547873745377706,
+  "tpr_at_1pct_fpr": 0.4611727416798732
+}

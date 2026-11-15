@@ -1,0 +1,15 @@
+{
+  "run": "frozen-deit_tiny-lr_full_s42",
+  "model": "frozen-deit_tiny-lr",
+  "training": "frozen backbone + head",
+  "variant": "full",
+  "seed": 42,
+  "params": 5520193,
+  "trainable_params": 193,
+  "train_seconds": 0,
+  "precision": 0.8271812080536913,
+  "recall": 0.7812995245641838,
+  "f1": 0.8035859820700897,
+  "roc_auc": 0.9180285921817222,
+  "tpr_at_1pct_fpr": 0.26465927099841524
+}
