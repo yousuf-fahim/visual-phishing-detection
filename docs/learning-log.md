@@ -95,3 +95,17 @@ Every choice we made (model, threshold, fusion type) was made on validation. If 
 1. *Your image model scores 0.967. Why should we believe it understands phishing?* We shouldn't fully: on pages where the density shortcut points the wrong way, it drops to 0.809. We report that openly (RQ4).
 2. *Why did you not test across time?* Phish360 has no per-sample dates. The only time contrast available is 2018 (Phish-IRIS) vs 2020-23 (Phish360), and that mixes time with different label definitions.
 3. *Why does the URL model not suffer on other languages?* URL features are character statistics and words like "login", which barely depend on the page's language. The screenshot is full of language-specific text.
+
+## Phase 6: Brand identification (stretch, 2026-11-16)
+
+**What we did.** On Phish-IRIS, fine-tuned MobileNetV3 to name the imitated brand (14 brands plus "other"), 3 seeds, grouped splits (`src/brand.py`, `results/phase6/`). Open-set test: 3 brands (adobe, alibaba, microsoft, drawn at random with seed 42 beforehand) were removed from training entirely, and the model had to flag them as unknown by low confidence.
+
+**Results (Phish-IRIS test).** Closed set: accuracy 0.872 ± 0.008, macro-F1 0.802 ± 0.026. Unseen-brand rejection: AUROC 0.828 ± 0.013 (mean top-class confidence 0.94 on known brands vs 0.79 on unknown). Apple is the weakest brand (52%, often mistaken for "other"); boa, wellsfargo, facebook and alibaba are near perfect. The brand-vs-domain consistency check was skipped: Phish-IRIS has no URLs.
+
+**Key concept: closed-set vs open-set recognition.**
+A normal classifier must pick one of the classes it was trained on, even for a brand it has never seen, so it will confidently call a new brand's page "dropbox" or "other". *Open-set* recognition adds a way to say "none of the above". The simplest is a threshold on the top softmax probability: unfamiliar inputs tend to get lower confidence. Our AUROC of 0.83 means this works better than chance but far from reliably: softmax networks are known to be over-confident on unfamiliar inputs. Better options exist (energy scores, distance in embedding space), but they're beyond this project.
+
+**Likely faculty questions.**
+1. *Why is macro-F1 lower than accuracy?* Accuracy is dominated by the big "other" class (208 of 425 test images). Macro-F1 averages over brands equally, so small, hard brands like apple pull it down.
+2. *Some brands have only 1-4 test images. Can you trust those cells?* No. The grouped split balanced phishing vs legitimate, not individual brands. Per-brand numbers for amazon, linkedin and chase aren't interpretable, and we say so.
+3. *How would you use brand ID in a real detector?* If the page looks like PayPal but the domain isn't PayPal's, it's suspicious. That needs each brand's real domains, which Phish-IRIS doesn't include, so we couldn't test it.
