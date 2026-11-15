@@ -28,7 +28,7 @@ detection rate under dataset or language shift.
 1. **Review the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (168 blank screenshots
    excluded), Q6 (folder name as label), Q9 (Phish-IRIS "other" = legitimate; the Phish-IRIS paper describes it as
    legitimate samples), Q10 (Phish-IRIS cropped to 4:3). Each entry says how to change it.
-2. **Review and merge the GitHub pull requests** (private repo, one PR per phase, stacked: merge them in order, Phase 0 first).
+2. **Review and merge the GitHub pull requests** at https://github.com/yousuf-fahim/visual-phishing-detection/pulls (private repo; PRs #1-#10 are stacked: merge #1 first, then #2, and so on. Each PR targets the previous phase's branch, and GitHub retargets the next one to main as you merge). There is no CI configured, so there are no checks to wait for.
 3. **Deploy the demo (optional):** follow `docs/DEPLOY.md`. The quickest route is Cloudflare Pages: upload the contents of `web/dist`
    after `cd web && npm install && npm run build`. Then put the link in README.md (the "Demo link" line).
 4. **Optional demo gallery:** capture screenshots of legitimate pages yourself (a Wikipedia article, your university homepage,
