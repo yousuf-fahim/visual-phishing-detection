@@ -16,8 +16,9 @@ Last updated: 2026-11-15 (autopilot run).
 | 1 Data audit | Done for both datasets |
 | 2 URL baseline | Done: LightGBM val ROC-AUC 0.970, TPR@1%FPR 0.63 (0.943 / 0.53 without artifact features) |
 | 3 Image models | Done: fine-tuned MobileNetV3 val ROC-AUC 0.967 ± 0.003 (3 seeds) |
-| 4 Fusion | Next |
-| 5-9 | Not started |
+| 4 Fusion | Done: late fusion val ROC-AUC 0.989, TPR@1%FPR 0.81 (URL 0.63, image 0.57) |
+| 5 Final + generalization | Next |
+| 6-9 | Not started |
 
 ## Phase 1 headline facts (from results/phase1/)
 
