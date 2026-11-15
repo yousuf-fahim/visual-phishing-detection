@@ -1,0 +1,12 @@
+model,url_features,image_embedding,probe,precision_mean,precision_std,recall_mean,recall_std,f1_mean,f1_std,roc_auc_mean,roc_auc_std,tpr_at_1pct_fpr_mean,tpr_at_1pct_fpr_std,n_seeds,clean_roc_auc,clean_tpr_at_1pct_fpr
+early_fusion,full,ft-mobilenetv3,image_blank,0.3974,0.0013,1.0,0.0,0.5687,0.0013,0.9179,0.0149,0.3624,0.0365,3,0.9766,0.7427
+early_fusion,full,ft-mobilenetv3,url_missing,0.8835,0.0122,0.8959,0.0211,0.8895,0.0117,0.9648,0.0034,0.5531,0.0452,3,0.9766,0.7427
+early_fusion,no_suspected_artifacts,ft-mobilenetv3,image_blank,0.3966,0.0,1.0,0.0,0.568,0.0,0.8603,0.0038,0.3413,0.0132,3,0.9726,0.655
+early_fusion,no_suspected_artifacts,ft-mobilenetv3,url_missing,0.8874,0.0182,0.8965,0.0037,0.8918,0.0074,0.9659,0.0023,0.589,0.0018,3,0.9726,0.655
+image_only,-,ft-mobilenetv3,image_blank,0.3966,0.0,1.0,0.0,0.568,0.0,0.5,0.0,0.0,0.0,3,0.9668,0.5652
+late_fusion,full,ft-mobilenetv3,image_blank,0.5118,0.0456,1.0,0.0,0.6763,0.0397,0.9699,0.0006,0.6313,0.0135,3,0.9894,0.8141
+late_fusion,full,ft-mobilenetv3,url_missing,0.8732,0.0229,0.9197,0.0171,0.8956,0.0112,0.9668,0.0034,0.5652,0.0378,3,0.9894,0.8141
+late_fusion,no_suspected_artifacts,ft-mobilenetv3,image_blank,0.4108,0.0144,1.0,0.0,0.5823,0.0145,0.9431,0.0003,0.5304,0.0133,3,0.9838,0.7163
+late_fusion,no_suspected_artifacts,ft-mobilenetv3,url_missing,0.8754,0.0284,0.9165,0.0216,0.8951,0.0116,0.9668,0.0034,0.5652,0.0378,3,0.9838,0.7163
+url_only,full,-,url_missing,0.3966,0.0,1.0,0.0,0.568,0.0,0.5,0.0,0.0,0.0,3,0.9699,0.6313
+url_only,no_suspected_artifacts,-,url_missing,0.3966,0.0,1.0,0.0,0.568,0.0,0.5,0.0,0.0,0.0,3,0.9431,0.5304

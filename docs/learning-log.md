@@ -67,3 +67,17 @@ A network pretrained on ImageNet has already learned general visual building blo
 1. *Why did the top half do worse than the full page?* Lower half content (form fields, footers, page density) carries signal too. The 0.015 gap is consistent across 3 seeds, so it's not noise.
 2. *Why MobileNetV3 instead of ResNet50?* CPU only: MobileNetV3-small fine-tunes in ~17 min. ResNet18 would take over 40 min per run, so it was used frozen instead. That trade-off is recorded in `docs/plans/phase-3.md`.
 3. *The image model doesn't beat the URL model. Is the project a failure?* No: RQ1 asks exactly that question, and the answer is a finding. Phase 4 checks whether the two are complementary, and Phase 7 checks what the image model actually relies on, given the homepage-vs-login confound.
+
+## Phase 4: Fusion and ablation (2026-11-15)
+
+**What we did.** Combined URL features and screenshots two ways (`src/train_fusion.py`, `results/phase4/`): *early fusion* concatenates the image embedding with the URL features and trains one MLP; *late fusion* trains the two models separately and averages their probabilities. Validation set, 3 seeds, plus a robustness probe that blanks one input at test time.
+
+**Results (validation, mean ± std).** URL only 0.970 / TPR@1%FPR 0.63; image only 0.967 / 0.57; early fusion 0.977-0.987 / 0.74-0.79; **late fusion 0.989 / 0.81**. Without the suspected URL artifacts, late fusion still reaches 0.984 (URL alone 0.943).
+
+**Key concept: complementary errors, and why stacking needs care.**
+Fusion only helps if the two models get *different* examples wrong. Here they clearly do: at a 1% false-alarm budget, catching 81% instead of 63% means many phishing pages with innocent-looking URLs have suspicious-looking screenshots, and vice versa. A subtle trap: early fusion on the *fine-tuned* image model's embeddings did worse than on a *frozen* ImageNet model's. The fine-tuned network had partly memorised its training screenshots, so on training data its embeddings looked unrealistically clean, and the fusion MLP learned to over-trust them. The robustness probe shows the other trade-off: late fusion degrades gracefully to the remaining input when one is missing, while early fusion with a blank screenshot falls to 0.918, below URL-only.
+
+**Likely faculty questions.**
+1. *Is multimodal fusion your contribution?* No. Phish360's authors already published a multimodal method (CrossPhire). This is a reproduction-scale ablation; our contribution is the generalization and shortcut analysis.
+2. *Why does a simple average beat a learned fusion network?* The learned one is trained on features that look more reliable on training data than they are (the memorisation effect), and averaging has nothing to overfit.
+3. *What happens if an attacker serves a blank page to the screenshotter?* Late fusion falls back to the URL score (0.970). Early fusion drops to 0.918. That's an argument for late fusion in a deployed system.
