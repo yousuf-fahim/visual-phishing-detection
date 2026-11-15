@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Network access is limited to this site's own files: the screenshot cannot be sent anywhere. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self'; img-src 'self' blob: data:; style-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Screenshot Phishing Score</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="banner" role="note">
+    <strong>Research prototype, not a security product.</strong>
+    Do not use it to decide whether a site is safe. Your screenshot is processed entirely in this browser tab
+    and is never uploaded.
+  </header>
+
+  <main>
+    <h1>Screenshot Phishing Score</h1>
+    <p class="lede">A small neural network (MobileNetV3) trained on screenshots from the Phish360 research dataset
+      estimates how much a web page <em>looks like</em> the phishing pages it was trained on.
+      It never sees the page's address, so it cannot know whether a site is genuine.</p>
+
+    <section id="drop" class="drop" tabindex="0" aria-describedby="drop-help">
+      <p><strong>Drop a screenshot here</strong> or <label class="picker">choose a file
+        <input id="file" type="file" accept="image/png,image/jpeg,image/webp"></label></p>
+      <p id="drop-help" class="hint">Best input: a plain screenshot of the browser's page area at about 1280×960
+        (no browser toolbar, not a full-page scroll capture).</p>
+    </section>
+
+    <p id="status" class="status" aria-live="polite">Loading model…</p>
+
+    <section id="result" class="result" hidden>
+      <div class="preview"><img id="preview" alt="Your screenshot (stays on this device)"></div>
+      <div class="score">
+        <p class="score-label">Phishing-likeness score</p>
+        <p id="score" class="score-value">–</p>
+        <div class="meter" aria-hidden="true"><div id="meter-fill"></div></div>
+        <p id="verdict" class="verdict"></p>
+        <p id="aspect-warning" class="warning" hidden></p>
+      </div>
+    </section>
+
+    <section class="explain">
+      <h2>What the score means</h2>
+      <p>The score is the model's probability that the screenshot comes from the "phishing" class of its training
+        data. It is a statement about appearance only. A high score means the page is visually similar to phishing pages
+        in the dataset, which in practice often just means "a sparse page with a login form". A low score means it looks
+        more like the dataset's legitimate pages, which were mostly busy homepages.</p>
+      <p>On the dataset's held-out test pages, this kind of model (averaged over three training runs; this page
+        uses one of them) reaches a ROC-AUC of <b data-card="test_roc_auc"></b>
+        (1.0 = perfect ranking, 0.5 = guessing). At a strict setting that wrongly flags only 1 in 100 legitimate pages,
+        it catches <b data-card="test_tpr_at_1pct_fpr" data-pct></b> of phishing pages. Combined with a URL model
+        in our study, ROC-AUC rises to <b data-card="late_fusion_test_roc_auc"></b>.</p>
+    </section>
+
+    <section class="explain">
+      <h2>Known limits (from our report)</h2>
+      <ul>
+        <li><b>It confuses "login page" with "phishing".</b> Real sign-in pages of banks and email providers often score
+          high. On test pages where simple page statistics point the wrong way, ROC-AUC falls to
+          <b data-card="shortcut_hard_roc_auc"></b>.</li>
+        <li><b>Faithful clones of busy homepages slip through.</b> They look like the legitimate training pages.</li>
+        <li><b>Other data, other years.</b> On a different, older dataset (Phish-IRIS, 2018), ROC-AUC drops to
+          <b data-card="cross_dataset_roc_auc"></b>.</li>
+        <li><b>Other languages.</b> A version trained on English pages scored <b data-card="english_trained_english_roc_auc"></b>
+          on English and <b data-card="english_trained_non_english_roc_auc"></b> on non-English pages.</li>
+        <li><b>Not tested against attackers.</b> Someone who knows the model could design a page to fool it.</li>
+      </ul>
+    </section>
+
+    <pre id="selftest" class="selftest" hidden></pre>
+  </main>
+
+  <footer>
+    <p>Neural Network lab project. Model: <span data-card="model"></span>. Data: Phish360 (Hacettepe University).
+      Static page; no data leaves your device.</p>
+  </footer>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

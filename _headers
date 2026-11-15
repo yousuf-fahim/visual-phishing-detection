@@ -1,0 +1,5 @@
+/*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=86400
+/*.onnx
+  Cache-Control: public, max-age=86400
