@@ -1,36 +1,29 @@
 # Status
 
-**WAITING at the start of Phase 1: datasets are downloading. data/raw/ is checked every 15 minutes, and Phase 1 starts automatically once the download is stable.**
 Last updated: 2026-11-15 (autopilot run).
 
-## What you need to do (then restart autopilot)
+**Phase 1 done for Phish360. Phish-IRIS is still missing**: when it arrives, re-run Phase 1 (parser plus cross-dataset overlap), then continue. Moving on to Phase 2 with Phish360.
 
-1. Download **Phish360** from https://web.cs.hacettepe.edu.tr/~selman/phish360-dataset/
-   and extract it into `data/raw/phish360/`.
-2. Download **Phish-IRIS** from https://web.cs.hacettepe.edu.tr/~selman/phish-iris-dataset/
-   (or Mendeley Data, DOI 10.17632/tk4fkswtj5.1) and extract it into `data/raw/phish-iris/`.
-   The folder names are a suggestion: Phase 1 inspects whatever layout it finds.
-3. Read `docs/QUESTIONS.md` (decisions made without you, all easy to reverse).
-4. Run `claude` in this folder and paste: `Read AUTOPILOT.md and follow it exactly. Continue from docs/STATUS.md (Phase 1).`
+## Waiting on Fahim
+
+1. **Phish-IRIS:** download it and tell me the path (or put it in `data/raw/phish-iris/`).
+2. **Verify the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (116 blank screenshots excluded), Q6 (folder name is the label).
 
 ## Phase progress
 
 | Phase | State |
 |---|---|
-| 0 Setup | Done. Committed. |
-| 1 Data audit | Not started: blocked, no datasets in data/raw/ |
-| 2-9 | Not started |
+| 0 Setup | Done |
+| 1 Data audit | Done for Phish360 (branch `feat/phase-1-data-audit`); Phish-IRIS parts pending |
+| 2 URL baseline | Next |
+| 3-9 | Not started |
 
-## Phase 0 summary
+## Phase 1 headline facts (from results/phase1/)
 
-- `.venv` with Python 3.13.3 (the only Python on this machine, see QUESTIONS.md Q1).
-- `requirements.txt` with pinned versions. All 19 libraries installed and import cleanly.
-- No GPU: torch 2.15.0+cpu, 6 CPU threads. Later phases should prefer frozen-backbone
-  embeddings and small images to keep training time down.
-- tldextract runs offline (`src/domain_utils.py`). Checked: `example.co.uk` extracted with no network.
-- Environment report: `results/env.json` (written by `src/check_env.py`).
-- Git repo initialised, first commit on `main`.
+- Phish360: 10,748 samples, 0 corrupt images, 10 missing HTML files (antivirus, probably).
+- Official split leaks (15.5% of its test has a relative in trainval), so we use our own grouped split: 7,451 / 1,591 / 1,590 after excluding 116 blank screenshots.
+- Shortcut: trivial image statistics reach ROC-AUC 0.85 (homepage vs login-page confound). This is the floor every image model must beat.
 
-## Next
+## Git
 
-Phase 1 (`prompts/01-data-audit.md`), as soon as both datasets are in data/raw/.
+No remote. Branches are local, one per phase, each built on the previous one: `main` (Phase 0), then `docs/onedrive-note`, then `feat/phase-1-data-audit`.
