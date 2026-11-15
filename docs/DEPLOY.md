@@ -1,5 +1,10 @@
 # Deploying the demo (static site)
 
+**Current deployment:** GitHub Pages, https://yousuf-fahim.github.io/visual-phishing-detection/, served from the
+`gh-pages` branch (which holds only the contents of `web/dist`). The self-test (`?selftest=1`) passed on the live site in Chrome and Edge.
+To update it after a change, rebuild (`cd web && npm run build`), then copy `web/dist` into a fresh folder, commit it there
+as branch `gh-pages`, and push that branch (`git push -f origin gh-pages`), as in option 1 below.
+
 The demo is a plain static site in `web/dist`: HTML, JS, one ONNX model (6.1 MB) and the onnxruntime-web
 WebAssembly runtime (11 MB), all self-hosted with relative paths. No server code, no environment variables,
 and no external requests (the page's Content-Security-Policy blocks them). Any static host works. Vercel is not used.

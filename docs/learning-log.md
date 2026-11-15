@@ -142,7 +142,7 @@ A model only works if it receives inputs prepared exactly as in training. Browse
 
 ## Phase 9: Report and viva preparation (2026-11-16)
 
-**What we did.** Wrote `docs/report.md` (8-page PDF in `docs/report.pdf`), the viva cheat sheet with 20 questions and a 5-slide outline (`docs/viva-cheatsheet.md`), a new README with reproduction commands, and `run_all.sh` to regenerate every result. Related work cites only sources we checked: the Phish360/CrossPhire paper (Applied Sciences 2026), the Phish-IRIS paper (ISMSIT 2018), VisualPhishNet, Phishpedia, and the method papers.
+**What we did.** Wrote `docs/report.md` (8-page PDF in `docs/pdf/report.pdf`), the viva cheat sheet with 20 questions and a 5-slide outline (`docs/viva-cheatsheet.md`), a new README with reproduction commands, and `run_all.sh` to regenerate every result. Related work cites only sources we checked: the Phish360/CrossPhire paper (Applied Sciences 2026), the Phish-IRIS paper (ISMSIT 2018), VisualPhishNet, Phishpedia, and the method papers.
 
 **Why.** Every number in the report must trace back to a file in `results/`. While writing, two numbers had come from one-off commands (the English share and the error counts), so we added them to `src/generalization.py` and `src/explain.py`. Re-running those scripts reproduced all existing results byte for byte. The check also exposed a figure bug (the Phish360 shortcut chart had silently included Phish-IRIS after it was added), which is now fixed.
 
