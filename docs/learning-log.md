@@ -127,3 +127,15 @@ A normal classifier must pick one of the classes it was trained on, even for a b
 1. *Does the model look at the logo, like a human would?* Mostly not. The header region gets less attention than average on phishing pages, and the confident errors are explained by page sparsity, not by logos.
 2. *Why does the border alone work so well?* Because the signal is global (how full, colourful and busy the whole page is), and even a thin frame reveals that. A model reading a specific local cue would collapse to near chance on the border.
 3. *What would fix this?* Training data with legitimate *login* pages (the real PayPal or bank sign-in pages), so "sparse form" stops predicting the label, plus evaluation on such pages. Our datasets don't provide them.
+
+## Phase 8: Static browser demo (2026-11-16)
+
+**What we did.** Exported the fine-tuned MobileNetV3 to ONNX (`src/export_onnx.py`, checked against PyTorch: max difference 5e-7) and built a static page (`web/`) that scores a dropped screenshot entirely in the browser with onnxruntime-web (WebAssembly). Int8 quantisation was tried and rejected: the file shrank from 6.1 to 1.7 MB, but validation ROC-AUC collapsed from 0.964 to 0.633 (`results/phase8/export_check.json`). Deploy steps for Cloudflare Pages and GitHub Pages are in `docs/DEPLOY.md`.
+
+**Key concept: train/serve skew, and how we ruled it out.**
+A model only works if it receives inputs prepared exactly as in training. Browsers resize images with their own filters, so a "224x224 version" made with a canvas would differ slightly from Pillow's Lanczos result: different pixels, silently different scores. We ported Pillow's resampling algorithm line by line to JavaScript (`web/src/preprocess.js`) and tested it: on 23 images (including odd sizes) the JS output is **bit-identical** to Python's, and probabilities agree to within 1e-6 (`results/phase8/parity_test.txt`). An end-to-end self-test in real headless Edge and Chrome (browser image decoder + JS + wasm model) reproduces Python's probability for a bundled synthetic image (`results/phase8/browser_selftest.txt`). The page's Content-Security-Policy only allows same-origin requests, so the screenshot physically can't be sent anywhere.
+
+**Likely faculty questions.**
+1. *Why not quantise the model for the web?* We tried: dynamic int8 quantisation destroyed accuracy (AUC 0.633), probably because MobileNetV3's hard-swish activations and squeeze-excite layers are sensitive to it. 6 MB in fp32 loads quickly enough.
+2. *How do you know the browser gives the same answer as your Python results?* Bit-exact preprocessing test on 23 images, plus a headless-browser self-test in two browsers.
+3. *Is this a security tool?* No. The page says so at the top, shows the known failure modes with their numbers, and a high score explicitly means "looks like the training phishing pages", not "is malicious".
