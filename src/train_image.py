@@ -74,12 +74,18 @@ class ScreenshotSet(torch.utils.data.Dataset):
         return self.tf(img), torch.tensor(self.labels[i], dtype=torch.float32)
 
 
-def load_split(variant: str):
+def load_split(variant: str, dataset: str = "phish360", subset: str = "all"):
+    """Train/val rows for one dataset. subset='english' keeps only pages whose
+    detected language is English (Phase 5 cross-language test)."""
     idx = pd.read_csv("data/processed/index.csv", keep_default_na=False)
     splits = pd.read_csv("data/processed/splits.csv", keep_default_na=False)
     assert (idx.path == splits.path).all()
     images = np.load(f"data/processed/img224_{variant}.npy", mmap_mode="r")
-    use = (splits.dataset == "phish360") & (splits.exclude == "")
+    use = (splits.dataset == dataset) & (splits.exclude == "")
+    if subset == "english":
+        lang = pd.read_csv("data/processed/languages.csv", keep_default_na=False)
+        assert (lang.path == splits.path).all()
+        use &= lang.language == "en"
     out = {}
     for s in ("train", "val"):
         rows = np.flatnonzero(use & (splits.split == s))
@@ -146,15 +152,22 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--dataset", default="phish360", choices=["phish360", "phish-iris"])
+    ap.add_argument("--subset", default="all", choices=["all", "english"])
+    ap.add_argument("--out", default="results/phase3", help="folder for runs/, history/, preds/")
     args = ap.parse_args()
+    global OUT
+    OUT = Path(args.out)
 
     torch.set_num_threads(6)
     set_seed(args.seed)
     run = f"{args.model}_{args.variant}_s{args.seed}"
+    if args.dataset != "phish360" or args.subset != "all":  # Phase 3 run names stay unchanged
+        run = f"{args.dataset}-{args.subset}-{run}"
     for sub in ("runs", "history", "preds"):
         (OUT / sub).mkdir(parents=True, exist_ok=True)
 
-    images, data = load_split(args.variant)
+    images, data = load_split(args.variant, args.dataset, args.subset)
     tr_rows, tr_y, _ = data["train"]
     va_rows, va_y, va_paths = data["val"]
     gen = torch.Generator().manual_seed(args.seed)
@@ -200,7 +213,7 @@ def main() -> None:
     pd.DataFrame(history).to_csv(OUT / "history" / f"{run}.csv", index=False)
     pd.DataFrame({"path": va_paths, "label_binary": va_y, "score": best_scores}).to_csv(
         OUT / "preds" / f"{run}.csv", index=False)
-    result = {"run": run, "model": args.model, "training": "fine-tuned" if args.model != "cnn" else "from scratch",
+    result = {"run": run, "dataset": args.dataset, "subset": args.subset, "model": args.model, "training": "fine-tuned" if args.model != "cnn" else "from scratch",
               "variant": args.variant, "seed": args.seed, "params": n_params, "best_epoch": best_epoch,
               "epochs_run": len(history), "train_seconds": round(train_seconds),
               **binary_metrics(va_y, best_scores)}
