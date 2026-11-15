@@ -68,3 +68,8 @@ Each entry: what came up, the options, what I chose, and how to change it.
 - **What came up:** on Phish-IRIS, trivial features reach ROC-AUC **0.995** (TPR@1%FPR 0.88). Most `other` images are square 1024x1024 JPEGs, while brand images are wide PNGs: aspect ratio alone gives AUC 0.80, and file format alone 0.79. Letterboxing removes the size but **not** the shape, because the grey bands' width encodes the aspect ratio.
 - **Chose:** Phish-IRIS images are top-cropped to the 4:3 viewport shape of Phish360 screenshots (1280x960) before letterboxing (`src/preprocess_images.py`). Phish360 is unchanged (aspect AUC 0.50 there), so the Phase 2-3 models stay valid. JPEG compression artefacts and colour differences can't be removed this way. Phish-IRIS results must be read with that caveat, and Phase 7 re-tests trivial statistics on the preprocessed inputs.
 - **Also found:** 97 near-duplicate clusters are shared between Phish-IRIS (2018) and Phish360 (2020-23), covering 208 and 247 samples, almost all phishing: the same kits persist for years. They're flagged `cross_dataset_dup` in `splits.csv` and dropped from the cross-dataset tests. A third of Phish-IRIS (951 of 2,849) has a near-duplicate within the dataset.
+
+## Q11 (Phase 4): which fused model goes to the final test
+
+- **Chose:** late fusion (plain average of URL LightGBM and fine-tuned MobileNetV3 probabilities). It's best on validation (ROC-AUC 0.989 ± 0.001, TPR@1%FPR 0.81) and has no fitted weights. Early fusion with frozen ResNet18 embeddings (0.987) also goes to Phase 5 as the "learned fusion" representative. Both use the full URL feature set, with the `no_suspected_artifacts` variant reported alongside.
+- **To change:** edit the model list in `src/evaluate.py`.

@@ -1,0 +1,10 @@
+model,url_features,image_embedding,precision_mean,precision_std,recall_mean,recall_std,f1_mean,f1_std,roc_auc_mean,roc_auc_std,tpr_at_1pct_fpr_mean,tpr_at_1pct_fpr_std,n_seeds
+early_fusion,full,frozen-resnet18,0.9385,0.01,0.9266,0.0081,0.9325,0.0064,0.9871,0.0015,0.7866,0.0106,3
+early_fusion,full,ft-mobilenetv3,0.9118,0.0119,0.9155,0.0071,0.9136,0.0033,0.9766,0.0015,0.7427,0.0545,3
+early_fusion,no_suspected_artifacts,frozen-resnet18,0.9144,0.0064,0.9128,0.0151,0.9135,0.0056,0.9771,0.0009,0.6889,0.0297,3
+early_fusion,no_suspected_artifacts,ft-mobilenetv3,0.9011,0.0096,0.9039,0.0033,0.9024,0.0054,0.9726,0.0005,0.655,0.0349,3
+image_only,-,ft-mobilenetv3,0.9102,0.0194,0.8674,0.0351,0.8879,0.0161,0.9668,0.0034,0.5652,0.0378,3
+late_fusion,full,ft-mobilenetv3,0.9608,0.0035,0.907,0.0216,0.9331,0.0115,0.9894,0.001,0.8141,0.0306,3
+late_fusion,no_suspected_artifacts,ft-mobilenetv3,0.9468,0.0126,0.897,0.0246,0.921,0.0078,0.9838,0.0005,0.7163,0.0276,3
+url_only,full,-,0.8937,0.0027,0.8748,0.0048,0.8841,0.0037,0.9699,0.0006,0.6313,0.0135,3
+url_only,no_suspected_artifacts,-,0.8592,0.0025,0.8188,0.0033,0.8385,0.0005,0.9431,0.0003,0.5304,0.0133,3
