@@ -139,3 +139,16 @@ A model only works if it receives inputs prepared exactly as in training. Browse
 1. *Why not quantise the model for the web?* We tried: dynamic int8 quantisation destroyed accuracy (AUC 0.633), probably because MobileNetV3's hard-swish activations and squeeze-excite layers are sensitive to it. 6 MB in fp32 loads quickly enough.
 2. *How do you know the browser gives the same answer as your Python results?* Bit-exact preprocessing test on 23 images, plus a headless-browser self-test in two browsers.
 3. *Is this a security tool?* No. The page says so at the top, shows the known failure modes with their numbers, and a high score explicitly means "looks like the training phishing pages", not "is malicious".
+
+## Phase 9: Report and viva preparation (2026-11-16)
+
+**What we did.** Wrote `docs/report.md` (8-page PDF in `docs/report.pdf`), the viva cheat sheet with 20 questions and a 5-slide outline (`docs/viva-cheatsheet.md`), a new README with reproduction commands, and `run_all.sh` to regenerate every result. Related work cites only sources we checked: the Phish360/CrossPhire paper (Applied Sciences 2026), the Phish-IRIS paper (ISMSIT 2018), VisualPhishNet, Phishpedia, and the method papers.
+
+**Why.** Every number in the report must trace back to a file in `results/`. While writing, two numbers had come from one-off commands (the English share and the error counts), so we added them to `src/generalization.py` and `src/explain.py`. Re-running those scripts reproduced all existing results byte for byte. The check also exposed a figure bug (the Phish360 shortcut chart had silently included Phish-IRIS after it was added), which is now fixed.
+
+**Key concept: reproducibility as a habit.** Fixed seeds, pinned library versions, scripts instead of notebooks, and results files instead of copied numbers mean anyone, including you in six months, can regenerate every table. "It runs again and gives identical bytes" is the strongest evidence that a number is real.
+
+**Likely faculty questions.**
+1. *Can I reproduce your numbers?* Yes: download the two datasets, install `requirements.txt`, and run `bash run_all.sh` (about 4-5 hours on CPU). Seeds are fixed, and spot re-runs gave byte-identical results.
+2. *Which of your results would you trust least?* The per-language and per-brand numbers (small samples, wide CIs), and anything on Phish-IRIS, given its format shortcut and the label-mapping assumption.
+3. *What is the single most important finding?* The screenshot model's in-distribution score overstates what it understands. On shortcut-hard pages it falls from 0.967 to 0.809, and its errors are legitimate login pages and homepage clones.

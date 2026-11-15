@@ -148,8 +148,21 @@ def plot(cd: pd.DataFrame, cl: pd.DataFrame) -> None:
     fig.savefig(OUT / "generalization.png", dpi=120)
 
 
+def language_table(d: pd.DataFrame) -> pd.DataFrame:
+    """Detected page languages in Phish360 (after exclusions), by label and split."""
+    p = d[(d.dataset == "phish360") & (d.exclude == "")]
+    t = p.groupby(["language", "label_binary"]).size().unstack(fill_value=0)
+    t.columns = ["legitimate", "phishing"]
+    t["share_of_legitimate"] = (t.legitimate / t.legitimate.sum()).round(4)
+    t["share_of_phishing"] = (t.phishing / t.phishing.sum()).round(4)
+    for s in ("train", "val", "test"):
+        t[f"n_{s}"] = p[p.split == s].language.value_counts().reindex(t.index, fill_value=0)
+    return t.sort_values("legitimate", ascending=False)
+
+
 def main() -> None:
     d = load()
+    language_table(d).to_csv(OUT / "language_counts.csv")
     images = np.load("data/processed/img224_full.npy", mmap_mode="r")
     cd = cross_dataset(d, images)
     cd.to_csv(OUT / "cross_dataset.csv", index=False)

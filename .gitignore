@@ -14,3 +14,5 @@ results/**/screenshots/
 models/*
 !models/.gitkeep
 results/**/logs/
+results/**/*.npy
+results/**/*.log

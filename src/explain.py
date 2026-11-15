@@ -160,6 +160,14 @@ def main() -> None:
 
     score = preds["score_image_only"].to_numpy()  # seed-averaged test scores from Phase 5
     yt = y[te]
+    # error counts at threshold 0.5 (used in results/error_analysis.md and the report)
+    counts = []
+    for model in ("image_only", "url_only:full", "late_fusion:full"):
+        pr = (preds[f"score_{model}"].to_numpy() >= 0.5).astype(int)
+        counts.append({"model": model, "threshold": 0.5, "TP": int(((pr == 1) & (yt == 1)).sum()),
+                       "FP": int(((pr == 1) & (yt == 0)).sum()), "TN": int(((pr == 0) & (yt == 0)).sum()),
+                       "FN": int(((pr == 0) & (yt == 1)).sum())})
+    pd.DataFrame(counts).to_csv(OUT / "confusion_counts.csv", index=False)
     kinds = {"TP": (yt == 1) & (score >= 0.5), "TN": (yt == 0) & (score < 0.5),
              "FP": (yt == 0) & (score >= 0.5), "FN": (yt == 1) & (score < 0.5)}
     picks = []

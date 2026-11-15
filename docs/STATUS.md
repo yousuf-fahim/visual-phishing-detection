@@ -1,37 +1,70 @@
 # Status
 
-Last updated: 2026-11-15 (autopilot run).
+Last updated: 2026-11-16 (end of the autopilot run).
 
-**Phase 1 done for Phish360. Phish-IRIS is still missing**: when it arrives, re-run Phase 1 (parser plus cross-dataset overlap), then continue. 
+## Final summary
 
-## Waiting on Fahim
+**All phases (0-9) are complete**, including the two optional ones (6 brand identification, 8 demo). Nothing is blocked.
 
-1. **Verify the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (116 blank screenshots excluded), Q6 (folder name is the label), Q9 (Phish-IRIS mapping), Q10 (Phish-IRIS 4:3 crop).
+### Headline results (all from `results/`)
+
+| | ROC-AUC | TPR @ 1% FPR |
+|---|---|---|
+| Phish360 test: URL only (LightGBM) | 0.961 | 0.587 |
+| Phish360 test: screenshot (MobileNetV3) | 0.967 | 0.472 |
+| Phish360 test: **late fusion** | **0.984** | **0.770** |
+| Trivial image statistics only (shortcut floor) | 0.853 | 0.190 |
+| Screenshot on shortcut-hard pages (n = 288) | **0.809** | 0.141 |
+| Screenshot, Phish360 to Phish-IRIS / Phish-IRIS to Phish360 | 0.931 / 0.910 | 0.250 / 0.267 |
+| Screenshot trained on English: English / non-English test | 0.964 / 0.940 | 0.533 / 0.274 |
+| Brand ID on Phish-IRIS (15 classes) | accuracy 0.872, macro-F1 0.802 | unseen-brand AUROC 0.828 |
+
+Story in one line: screenshots complement URLs well (fusion is best), but the screenshot model mostly learned
+"sparse login page vs busy homepage", a Phish360 collection artifact, and it loses about half its strict-threshold
+detection rate under dataset or language shift.
+
+### Waiting on you, with exact steps
+
+1. **Review the PROVISIONAL decisions** in `docs/QUESTIONS.md`: Q4 (own grouped split), Q5 (168 blank screenshots
+   excluded), Q6 (folder name as label), Q9 (Phish-IRIS "other" = legitimate; the Phish-IRIS paper describes it as
+   legitimate samples), Q10 (Phish-IRIS cropped to 4:3). Each entry says how to change it.
+2. **Review and merge the GitHub pull requests** at https://github.com/yousuf-fahim/visual-phishing-detection/pulls (private repo; PRs #1-#10 are stacked: merge #1 first, then #2, and so on. Each PR targets the previous phase's branch, and GitHub retargets the next one to main as you merge). There is no CI configured, so there are no checks to wait for.
+3. **Deploy the demo (optional):** follow `docs/DEPLOY.md`. The quickest route is Cloudflare Pages: upload the contents of `web/dist`
+   after `cd web && npm install && npm run build`. Then put the link in README.md (the "Demo link" line).
+4. **Optional demo gallery:** capture screenshots of legitimate pages yourself (a Wikipedia article, your university homepage,
+   a news front page, and a real bank or webmail *login* page to show the main weakness). Details are in docs/DEPLOY.md.
+5. **Read before the viva:** `docs/learning-log.md` (top to bottom), `docs/viva-cheatsheet.md`, `docs/report.pdf`.
+
+### Things I'd double-check
+
+- **Phish-IRIS copy:** a Kaggle mirror with 3 images fewer than the paper. Results on it also carry a JPEG-format shortcut (trivial AUC 0.995).
+- **Small subsets:** per-brand (some brands have 1-4 test images) and per-language (French 85, Spanish 70) numbers have wide CIs.
+- **Report title and author line** in `docs/report.md`: adjust to your lab's format, then regenerate the PDF (see below).
+- **Full re-run:** `run_all.sh` was assembled from the exact commands used, and spot re-runs of several steps gave byte-identical
+  results, but a full from-scratch run (about 4-5 hours) was not repeated end to end.
+- **Regenerating the PDF:** it was made by converting Markdown to HTML (npm `marked`) and printing with headless Edge (no pandoc on
+  this machine). Simplest alternative: install pandoc, or open the Markdown in VS Code and print it.
 
 ## Phase progress
 
 | Phase | State |
 |---|---|
-| 0 Setup | Done |
-| 1 Data audit | Done for both datasets |
-| 2 URL baseline | Done: LightGBM val ROC-AUC 0.970, TPR@1%FPR 0.63 (0.943 / 0.53 without artifact features) |
-| 3 Image models | Done: fine-tuned MobileNetV3 val ROC-AUC 0.967 ± 0.003 (3 seeds) |
-| 4 Fusion | Done: late fusion val ROC-AUC 0.989, TPR@1%FPR 0.81 (URL 0.63, image 0.57) |
-| 5 Final + generalization | Done: test late fusion 0.984; image 0.809 on shortcut-hard pages; cross-dataset 0.91-0.93; non-English 0.940 (see docs/findings-phase5.md) |
-| 6 Brand ID (optional) | Done: Phish-IRIS 15-class accuracy 0.872, macro-F1 0.802; unseen-brand AUROC 0.828 |
-| 7 Explainability | Done: attention on empty space below forms, not logos; border-only AUC 0.914; robust to JPEG/grayscale, fragile to blur/top-crop |
-| 8 Demo (optional) | Done: static site in web/dist, bit-exact JS preprocessing, self-test passes in Edge and Chrome; deploy steps in docs/DEPLOY.md |
-| 9 Report | Next |
-
-## Phase 1 headline facts (from results/phase1/)
-
-- Phish360: 10,748 samples, 0 corrupt images, 10 missing HTML files (antivirus, probably).
-- Official split leaks (15.5% of its test has a relative in trainval), so we use our own grouped split: 7,451 / 1,591 / 1,590 after excluding 116 blank screenshots.
-- Shortcut: trivial image statistics reach ROC-AUC 0.85 (homepage vs login-page confound). This is the floor every image model must beat.
+| 0 Setup | Done (Python 3.13, CPU only) |
+| 1 Data audit | Done for both datasets: grouped splits, leakage and shortcut checks |
+| 2 URL baseline | Done: LightGBM val 0.970 (0.943 without artifact features) |
+| 3 Image models | Done: fine-tuned MobileNetV3 val 0.967 Â± 0.003 |
+| 4 Fusion | Done: late fusion val 0.989, TPR@1%FPR 0.81 |
+| 5 Final + generalization | Done: see table above and docs/findings-phase5.md |
+| 6 Brand ID (optional) | Done |
+| 7 Explainability | Done: results/error_analysis.md, results/phase7/ |
+| 8 Demo (optional) | Done: web/, bit-exact preprocessing, browser self-tests pass; not deployed (your step) |
+| 9 Report | Done: docs/report.md, docs/report.pdf, docs/viva-cheatsheet.md, README.md |
 
 ## Git
 
-At the end of the run: create a **private** GitHub repo (Fahim's request), push `main` and every phase branch, and open PRs for review. data/, screenshots and models/ are never pushed. The Phish360 copies in Downloads were deleted at Fahim's request: `data/raw/phish360` is now the only copy.
-
-
-No remote. Branches are local, one per phase, each built on the previous one: `main` (Phase 0), then `docs/onedrive-note`, then `feat/phase-1-data-audit`.
+Local branches, one per phase, each built on the previous one: `main` (Phase 0), then `docs/onedrive-note`,
+`feat/phase-1-data-audit`, `feat/phase-2-url-baseline`, `feat/phase-3-image-models`, `feat/phase-4-fusion`,
+`feat/phase-5-final-generalization`, `feat/phase-6-brand-id`, `feat/phase-7-explainability`, `feat/phase-8-static-demo`,
+and `docs/phase-9-report`. The Phish-IRIS addition is a commit on the Phase 3 branch. Pushed to a private GitHub repo with one PR per branch.
+data/, model checkpoints and per-screenshot images are git-ignored. `data/raw/phish360` and `data/raw/phish-iris` are the only copies of the
+datasets (the Downloads copies were deleted at your request).
