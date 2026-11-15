@@ -1,0 +1,25 @@
+PASS #00 1280x960  max|dpixel|=0 (0 values differ)  p_js=-0.000000 p_py=0.000000  |dp|=5.96e-8  resize 49 ms
+PASS #01 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.000000 p_py=0.000000  |dp|=0.00e+0  resize 36 ms
+PASS #02 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.000111 p_py=0.000111  |dp|=5.96e-8  resize 35 ms
+PASS #03 1280x960  max|dpixel|=0 (0 values differ)  p_js=-0.000000 p_py=0.000000  |dp|=5.96e-8  resize 35 ms
+PASS #04 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.999180 p_py=0.999180  |dp|=0.00e+0  resize 36 ms
+PASS #05 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.000003 p_py=0.000003  |dp|=0.00e+0  resize 36 ms
+PASS #06 1280x960  max|dpixel|=0 (0 values differ)  p_js=-0.000000 p_py=0.000000  |dp|=5.96e-8  resize 43 ms
+PASS #07 1280x960  max|dpixel|=0 (0 values differ)  p_js=-0.000000 p_py=0.000000  |dp|=5.96e-8  resize 42 ms
+PASS #08 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.000002 p_py=0.000002  |dp|=2.98e-8  resize 40 ms
+PASS #09 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.000199 p_py=0.000199  |dp|=1.49e-7  resize 38 ms
+PASS #10 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.001375 p_py=0.001375  |dp|=2.98e-8  resize 50 ms
+PASS #11 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.999274 p_py=0.999274  |dp|=0.00e+0  resize 37 ms
+PASS #12 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.999983 p_py=0.999983  |dp|=0.00e+0  resize 36 ms
+PASS #13 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.983619 p_py=0.983619  |dp|=1.19e-7  resize 36 ms
+PASS #14 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.997324 p_py=0.997324  |dp|=5.96e-8  resize 37 ms
+PASS #15 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.000780 p_py=0.000780  |dp|=2.98e-8  resize 36 ms
+PASS #16 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.999649 p_py=0.999649  |dp|=0.00e+0  resize 40 ms
+PASS #17 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.972678 p_py=0.972678  |dp|=5.96e-8  resize 35 ms
+PASS #18 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.969480 p_py=0.969481  |dp|=8.34e-7  resize 35 ms
+PASS #19 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.921930 p_py=0.921929  |dp|=3.58e-7  resize 42 ms
+PASS #20 1280x960  max|dpixel|=0 (0 values differ)  p_js=0.997240 p_py=0.997240  |dp|=0.00e+0  resize 36 ms
+PASS #21 1003x1500  max|dpixel|=0 (0 values differ)  p_js=0.972957 p_py=0.972957  |dp|=2.38e-7  resize 45 ms
+PASS #22 777x333  max|dpixel|=0 (0 values differ)  p_js=0.999704 p_py=0.999704  |dp|=0.00e+0  resize 9 ms
+
+23/23 passed. worst pixel diff 0, values differing in total 0, worst |dp| 8.34e-7

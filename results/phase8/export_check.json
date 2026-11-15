@@ -1,0 +1,9 @@
+{
+  "torch_vs_onnx_max_abs_diff_20_samples": 5.364418029785156e-07,
+  "val_roc_auc_fp32": 0.9644,
+  "val_roc_auc_int8": 0.6334,
+  "size_mb_fp32": 6.09,
+  "size_mb_int8": 1.69,
+  "shipped": "fp32",
+  "selftest_expected_p_phish": 0.9972399473190308
+}
