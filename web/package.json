@@ -1,0 +1,15 @@
+{
+  "name": "phish-screenshot-demo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Research prototype: in-browser screenshot phishing score (static, nothing uploaded).",
+  "type": "module",
+  "scripts": {
+    "test": "node test/parity.mjs",
+    "build": "node build.mjs",
+    "serve": "node serve.mjs"
+  },
+  "dependencies": {
+    "onnxruntime-web": "1.20.1"
+  }
+}

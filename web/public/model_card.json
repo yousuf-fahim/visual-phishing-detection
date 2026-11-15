@@ -1,0 +1,19 @@
+{
+  "model": "MobileNetV3-small, ImageNet-pretrained, fine-tuned on Phish360 screenshots (seed 42)",
+  "shipped_precision": "fp32",
+  "selftest_expected_p_phish": 0.99724,
+  "test_roc_auc": 0.967,
+  "test_tpr_at_1pct_fpr": 0.472,
+  "shortcut_hard_roc_auc": 0.809,
+  "cross_dataset_roc_auc": 0.931,
+  "english_trained_non_english_roc_auc": 0.94,
+  "english_trained_english_roc_auc": 0.964,
+  "late_fusion_test_roc_auc": 0.984,
+  "sources": [
+    "results/final_in_distribution.csv",
+    "results/phase5/final_shortcut_hard.csv",
+    "results/phase5/cross_dataset.csv",
+    "results/phase5/cross_language.csv",
+    "results/phase8/export_check.json"
+  ]
+}
