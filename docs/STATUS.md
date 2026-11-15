@@ -2,7 +2,7 @@
 
 Last updated: 2026-11-15 (autopilot run).
 
-**Phase 1 done for Phish360. Phish-IRIS is still missing**: when it arrives, re-run Phase 1 (parser plus cross-dataset overlap), then continue. Moving on to Phase 2 with Phish360.
+**Phase 1 done for Phish360. Phish-IRIS is still missing**: when it arrives, re-run Phase 1 (parser plus cross-dataset overlap), then continue. Phase 2 done. Moving on to Phase 3 (image models).
 
 ## Waiting on Fahim
 
@@ -15,8 +15,9 @@ Last updated: 2026-11-15 (autopilot run).
 |---|---|
 | 0 Setup | Done |
 | 1 Data audit | Done for Phish360 (branch `feat/phase-1-data-audit`); Phish-IRIS parts pending |
-| 2 URL baseline | Next |
-| 3-9 | Not started |
+| 2 URL baseline | Done: LightGBM val ROC-AUC 0.970, TPR@1%FPR 0.63 (0.943 / 0.53 without artifact features) |
+| 3 Image models | Next |
+| 4-9 | Not started |
 
 ## Phase 1 headline facts (from results/phase1/)
 
