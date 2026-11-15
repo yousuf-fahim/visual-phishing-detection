@@ -1,0 +1,41 @@
+{
+  "closed_set": {
+    "n_classes": 15,
+    "n_test": 425,
+    "seeds": 3,
+    "test_accuracy": {
+      "mean": 0.8722,
+      "std": 0.0076
+    },
+    "test_macro_f1": {
+      "mean": 0.8017,
+      "std": 0.0263
+    },
+    "test_brand_only_accuracy": {
+      "mean": 0.8618,
+      "std": 0.0211
+    }
+  },
+  "open_set": {
+    "unknown_brands": "adobe,alibaba,microsoft",
+    "n_unknown": 256,
+    "n_known_test": 386,
+    "unknown_auroc": {
+      "mean": 0.8276,
+      "std": 0.0134
+    },
+    "known_test_accuracy": {
+      "mean": 0.8903,
+      "std": 0.0152
+    },
+    "mean_conf_known": {
+      "mean": 0.9412,
+      "std": 0.0071
+    },
+    "mean_conf_unknown": {
+      "mean": 0.79,
+      "std": 0.0098
+    }
+  },
+  "brand_domain_consistency": "skipped: Phish-IRIS has no URLs"
+}

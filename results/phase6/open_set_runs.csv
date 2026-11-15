@@ -1,0 +1,4 @@
+seed,best_epoch,val_macro_f1,train_seconds,unknown_brands,n_known_test,n_unknown,unknown_auroc,known_test_accuracy,mean_conf_known,mean_conf_unknown
+42,12,0.8133,293,"adobe,alibaba,microsoft",386,256,0.8290610832253886,0.8963730569948186,0.9423669,0.7907837
+43,12,0.8253,312,"adobe,alibaba,microsoft",386,256,0.8401473445595855,0.9015544041450777,0.9477445,0.79939914
+44,9,0.8159,278,"adobe,alibaba,microsoft",386,256,0.8135018620466322,0.8730569948186528,0.93361574,0.7797922
