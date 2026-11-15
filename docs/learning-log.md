@@ -109,3 +109,21 @@ A normal classifier must pick one of the classes it was trained on, even for a b
 1. *Why is macro-F1 lower than accuracy?* Accuracy is dominated by the big "other" class (208 of 425 test images). Macro-F1 averages over brands equally, so small, hard brands like apple pull it down.
 2. *Some brands have only 1-4 test images. Can you trust those cells?* No. The grouped split balanced phishing vs legitimate, not individual brands. Per-brand numbers for amazon, linkedin and chase aren't interpretable, and we say so.
 3. *How would you use brand ID in a real detector?* If the page looks like PayPal but the domain isn't PayPal's, it's suspicious. That needs each brand's real domains, which Phish-IRIS doesn't include, so we couldn't test it.
+
+## Phase 7: Explainability and robustness (2026-11-16)
+
+**What we did.** Asked what the screenshot model actually uses (`src/explain.py`): Grad-CAM heatmaps, occlusion maps over all 1,590 test pages, and classifiers that see only the page border or only the centre. Then tested fragility (`src/robustness.py`) under blur, JPEG, brightness, grayscale, inversion and above-the-fold cropping, and wrote `results/error_analysis.md`.
+
+**Results.**
+- On phishing pages the model's attention sits on the **empty area below the login form and the footer, not on the brand logo**. Grad-CAM mass in the top 20% (header/logo) is 0.12 vs 0.20 for an even spread, and in the bottom 20% it's 0.25.
+- The border alone (a 20-pixel ring) gives ROC-AUC 0.914, about the same as the centre alone (0.911).
+- Every confident false positive is a legitimate login page, and every confident false negative is a phishing clone of a busy homepage.
+- Robust to JPEG (0.960 at quality 10) and grayscale (0.961); fragile to heavy blur (0.79), wash-out (0.88) and losing the lower page (0.74 with only the top 20%). Late fusion stays at 0.95 or above in every case.
+
+**Key concept: explanation methods and what they can't prove.**
+*Grad-CAM* asks "which regions of the last convolutional layer pushed the score up?" and paints them as a heatmap. *Occlusion* is more direct: hide one patch and see if the answer changes. Both are approximate: Grad-CAM is coarse (7x7 cells here), and occlusion misses evidence that is spread out redundantly (which is why legitimate pages barely react to any single patch). But when several methods, the error analysis and the shortcut test all point the same way, the story is credible. Here that story is: **the model mostly detects "sparse login-style page" rather than "fake brand"**. That's a property of how Phish360 was assembled (legitimate = homepages), not of phishing itself.
+
+**Likely faculty questions.**
+1. *Does the model look at the logo, like a human would?* Mostly not. The header region gets less attention than average on phishing pages, and the confident errors are explained by page sparsity, not by logos.
+2. *Why does the border alone work so well?* Because the signal is global (how full, colourful and busy the whole page is), and even a thin frame reveals that. A model reading a specific local cue would collapse to near chance on the border.
+3. *What would fix this?* Training data with legitimate *login* pages (the real PayPal or bank sign-in pages), so "sparse form" stops predicting the label, plus evaluation on such pages. Our datasets don't provide them.

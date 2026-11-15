@@ -19,8 +19,9 @@ Last updated: 2026-11-15 (autopilot run).
 | 4 Fusion | Done: late fusion val ROC-AUC 0.989, TPR@1%FPR 0.81 (URL 0.63, image 0.57) |
 | 5 Final + generalization | Done: test late fusion 0.984; image 0.809 on shortcut-hard pages; cross-dataset 0.91-0.93; non-English 0.940 (see docs/findings-phase5.md) |
 | 6 Brand ID (optional) | Done: Phish-IRIS 15-class accuracy 0.872, macro-F1 0.802; unseen-brand AUROC 0.828 |
-| 7 Explainability | Next |
-| 8-9 | Not started |
+| 7 Explainability | Done: attention on empty space below forms, not logos; border-only AUC 0.914; robust to JPEG/grayscale, fragile to blur/top-crop |
+| 8 Demo (optional) | Next |
+| 9 Report | Not started |
 
 ## Phase 1 headline facts (from results/phase1/)
 
