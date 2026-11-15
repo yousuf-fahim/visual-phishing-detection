@@ -1,0 +1,31 @@
+{
+  "seed": 42,
+  "groups_crossing_splits": 0,
+  "registered_domains_crossing_splits": 0,
+  "excluded": {
+    "near_blank": 116
+  },
+  "excluded_by_label": {
+    "phish": 110,
+    "legit": 6
+  },
+  "after_exclusion": {
+    "phish360": {
+      "test": {
+        "n": 1590,
+        "share": 0.1495,
+        "phishing_fraction": 0.3962
+      },
+      "train": {
+        "n": 7451,
+        "share": 0.7008,
+        "phishing_fraction": 0.3974
+      },
+      "val": {
+        "n": 1591,
+        "share": 0.1496,
+        "phishing_fraction": 0.3966
+      }
+    }
+  }
+}
