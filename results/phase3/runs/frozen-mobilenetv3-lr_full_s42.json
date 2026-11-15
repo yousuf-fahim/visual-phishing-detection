@@ -1,0 +1,15 @@
+{
+  "run": "frozen-mobilenetv3-lr_full_s42",
+  "model": "frozen-mobilenetv3-lr",
+  "training": "frozen backbone + head",
+  "variant": "full",
+  "seed": 42,
+  "params": 1521025,
+  "trainable_params": 1025,
+  "train_seconds": 0,
+  "precision": 0.8354838709677419,
+  "recall": 0.820919175911252,
+  "f1": 0.8281374900079936,
+  "roc_auc": 0.9287787242472266,
+  "tpr_at_1pct_fpr": 0.2900158478605388
+}

@@ -31,7 +31,8 @@ from sklearn.preprocessing import StandardScaler
 
 SEED = 42
 OUT = Path("results/phase1")
-FEATURES = ["width", "height", "aspect", "file_kb", "mean_r", "mean_g", "mean_b", "white_frac", "gray_std"]
+FEATURES = ["width", "height", "aspect", "file_kb", "mean_r", "mean_g", "mean_b", "white_frac", "gray_std",
+            "is_jpeg"]
 
 
 def tpr_at_fpr(y, score, max_fpr=0.01) -> float:

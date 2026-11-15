@@ -28,6 +28,7 @@ def features(path: str) -> dict:
     """Return trivial features + pHash for one screenshot (or NaNs if unreadable)."""
     try:
         with Image.open(path) as im:
+            is_jpeg = int(im.format == "JPEG")  # real file format, not the extension
             rgb = im.convert("RGB")
             phash = str(imagehash.phash(rgb))  # 64-bit hash as 16 hex chars
             # Colour statistics on a 320-px-wide copy: same averages, ~16x faster.
@@ -41,10 +42,11 @@ def features(path: str) -> dict:
             # near-white pixels: all three channels above 240 (of 255)
             "white_frac": float((a.min(axis=2) > 240).mean()),
             "gray_std": float(gray.std()),  # overall contrast: also a trivial statistic
+            "is_jpeg": is_jpeg,
         }
     except Exception:
         return {"phash": "", "mean_r": np.nan, "mean_g": np.nan, "mean_b": np.nan,
-                "white_frac": np.nan, "gray_std": np.nan}
+                "white_frac": np.nan, "gray_std": np.nan, "is_jpeg": np.nan}
 
 
 def main() -> None:

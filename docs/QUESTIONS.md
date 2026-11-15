@@ -56,3 +56,15 @@ Each entry: what came up, the options, what I chose, and how to change it.
 - `has_www` is the top LightGBM feature (26% of gain): 71% of legitimate URLs start with `www.`, vs 14% of phishing. That reflects how the legitimate list was collected (top-site domains), not a property of phishing. TLD is skewed the same way (`.cz`, `.de`, `.ro` appear almost only as legitimate), and `is_root_path` is the homepage confound from Q7.
 - Removing all of them drops LightGBM from ROC-AUC 0.970 to 0.943, and TPR@1%FPR from 0.63 to 0.53 (`results/phase2/metrics_summary.csv`). The URL baseline stays strong without them.
 - **Chose:** keep the full feature set as the main URL baseline (matching the literature), and report the `no_suspected_artifacts` variant next to it in RQ1. The fusion phase uses both variants, so it can be checked for leaning on the artifacts.
+
+## Q9 (Phase 1, PROVISIONAL): Phish-IRIS source and label mapping
+
+- **Source:** the Kaggle mirror `saurabhshahane/phishiris` (Fahim's download), not the authors' Hacettepe/Mendeley page. It has 1,312 train and 1,537 test images, vs 1,313 and 1,539 in the paper (1 and 2 missing). The folder `val` is the official test set. The report cites the original Phish-IRIS paper.
+- **Mapping:** the 14 brand classes become phishing (1), and `other` becomes legitimate (0), following the authors' description of `other` as legitimate pages. That gives 1,452 phishing and 1,397 legitimate (`data/processed/label_mapping.json`). No URLs and no HTML, so Phish-IRIS is image-only.
+- **To change:** edit `index_phish_iris()` in `src/build_index.py` and re-run Phase 1.
+
+## Q10 (Phase 1/3): Phish-IRIS shape shortcut, so its images are cropped to a 4:3 viewport
+
+- **What came up:** on Phish-IRIS, trivial features reach ROC-AUC **0.995** (TPR@1%FPR 0.88). Most `other` images are square 1024x1024 JPEGs, while brand images are wide PNGs: aspect ratio alone gives AUC 0.80, and file format alone 0.79. Letterboxing removes the size but **not** the shape, because the grey bands' width encodes the aspect ratio.
+- **Chose:** Phish-IRIS images are top-cropped to the 4:3 viewport shape of Phish360 screenshots (1280x960) before letterboxing (`src/preprocess_images.py`). Phish360 is unchanged (aspect AUC 0.50 there), so the Phase 2-3 models stay valid. JPEG compression artefacts and colour differences can't be removed this way. Phish-IRIS results must be read with that caveat, and Phase 7 re-tests trivial statistics on the preprocessed inputs.
+- **Also found:** 97 near-duplicate clusters are shared between Phish-IRIS (2018) and Phish360 (2020-23), covering 208 and 247 samples, almost all phishing: the same kits persist for years. They're flagged `cross_dataset_dup` in `splits.csv` and dropped from the cross-dataset tests. A third of Phish-IRIS (951 of 2,849) has a near-duplicate within the dataset.

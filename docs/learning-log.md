@@ -47,3 +47,23 @@ A feature can predict the label without being a real phishing signal, if it refl
 1. *Why is TPR at 1% FPR so much lower than ROC-AUC suggests?* AUC averages over all thresholds. At the strict operating point a real deployment needs (1 legit site in 100 flagged), only about 63% of phishing is caught.
 2. *Your top feature is 'has www'. Isn't that suspicious?* Yes, and we say so. Removing it alone costs almost nothing, because correlated features take over. Removing every suspected artifact costs about 0.03 AUC, and we report both versions.
 3. *Why use an MLP on tabular features at all?* As a neural baseline for a Neural Network lab. On about 30 tabular features it ties LightGBM (0.971 vs 0.970), which is the usual finding: trees match or beat neural nets on small tabular data.
+
+### Phase 1 addendum: Phish-IRIS added (2026-11-15)
+
+Phish-IRIS (2,849 images, 14 brands plus "other") was indexed and split the same way. Two lessons. First, **trivial features predict Phish-IRIS almost perfectly** (ROC-AUC 0.995): its legitimate images are mostly square JPEGs and its phishing images wide PNGs. Letterboxing keeps the aspect ratio, so the grey band width would still give the label away. Phish-IRIS images are therefore cropped to the same 4:3 browser-viewport shape as Phish360 before resizing. Second, **97 phishing page designs appear in both datasets**, years apart: kits are reused for a long time. Those samples are flagged and kept out of the cross-dataset tests.
+
+*Faculty question: "Isn't Phish-IRIS a standard benchmark? Why distrust it?"* Because a classifier that never looks at page content (only shape, file format and mean colour) already scores 0.995 on it. A high Phish-IRIS score therefore says little about visual phishing cues.
+
+## Phase 3: Image models (2026-11-15)
+
+**What we did.** Letterboxed every screenshot onto a 224x224 canvas (`src/preprocess_images.py`), then trained: a small CNN from scratch (0.39M parameters), a fully fine-tuned ImageNet MobileNetV3-small (1.5M), and frozen ResNet18 / DeiT-tiny (a small ViT) / MobileNetV3 backbones with small heads. All on CPU, validation set only, 3 seeds for the best configuration (`results/phase3/metrics_summary.csv`).
+
+**Results (validation ROC-AUC).** Fine-tuned MobileNetV3, full page: **0.967 ± 0.003** (TPR@1%FPR 0.57). Frozen ResNet18 + MLP: 0.954. Same MobileNetV3 on the top half only: 0.952. CNN from scratch: 0.939. All clearly beat the trivial-feature floor (0.85), but none beat the URL baseline (0.970).
+
+**Key concept: transfer learning, and why no flips.**
+A network pretrained on ImageNet has already learned general visual building blocks (edges, text strokes, shapes, layouts). With only ~7,500 training screenshots, reusing those building blocks beats learning everything from scratch: the pretrained model reached in 3 epochs what the scratch CNN barely reached in 15. *Fine-tuning* updates all weights; a *frozen backbone* only trains a small head on its output vectors, which is 300x faster on a CPU but slightly less accurate. We used only light augmentation (small crops, colour jitter, blur, JPEG re-compression) and **no horizontal flips**: a mirrored login page, with its logo top-right and text running backwards, never occurs in reality, and layout is part of the signal. The learning curves show classic overfitting after epoch 5-8 (training loss keeps falling, validation loss rises), which early stopping handles by keeping the best validation epoch.
+
+**Likely faculty questions.**
+1. *Why did the top half do worse than the full page?* Lower half content (form fields, footers, page density) carries signal too. The 0.015 gap is consistent across 3 seeds, so it's not noise.
+2. *Why MobileNetV3 instead of ResNet50?* CPU only: MobileNetV3-small fine-tunes in ~17 min. ResNet18 would take over 40 min per run, so it was used frozen instead. That trade-off is recorded in `docs/plans/phase-3.md`.
+3. *The image model doesn't beat the URL model. Is the project a failure?* No: RQ1 asks exactly that question, and the answer is a finding. Phase 4 checks whether the two are complementary, and Phase 7 checks what the image model actually relies on, given the homepage-vs-login confound.

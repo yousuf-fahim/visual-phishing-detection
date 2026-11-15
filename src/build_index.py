@@ -90,12 +90,41 @@ def index_phish360() -> list[dict]:
 
 
 def index_phish_iris() -> list[dict]:
-    """Phish-IRIS has not been downloaded yet. Its layout is parsed once it's in
-    data/raw/phish-iris (written after inspecting the real files, not guessed)."""
-    if not (RAW / "phish-iris").exists():
-        print("Phish-IRIS not found in data/raw/phish-iris: skipped for now.")
+    """Phish-IRIS layout (Kaggle mirror of the 2018 dataset): {train,val}/<class>/<image>.
+
+    'val' is the dataset's official test set (1,537 images here vs 1,539 in the paper;
+    train has 1,312 vs 1,313). There are 15 classes: 14 imitated brands, plus 'other',
+    which the authors describe as legitimate pages. Binary mapping (PROVISIONAL):
+    brand -> phishing (1), other -> legitimate (0). There are no URLs and no HTML.
+    """
+    root = RAW / "phish-iris"
+    if not root.exists():
+        print("Phish-IRIS not found in data/raw/phish-iris: skipped.")
         return []
-    raise NotImplementedError("Inspect the Phish-IRIS layout, then implement this parser.")
+    rows = []
+    for split_dir, official in (("train", "train"), ("val", "test")):
+        for class_dir in sorted(p for p in (root / split_dir).iterdir() if p.is_dir()):
+            is_legit = class_dir.name == "other"
+            for img in sorted(p for p in class_dir.iterdir() if p.is_file()):
+                rows.append({
+                    "dataset": "phish-iris",
+                    "sample_id": f"{split_dir}/{class_dir.name}/{img.name}",
+                    "official_split": official,
+                    "path": img.as_posix(),
+                    "html_path": "",
+                    "html_present": False,
+                    "label_binary": 0 if is_legit else 1,
+                    "brand": "" if is_legit else class_dir.name,
+                    "folder_class": class_dir.name,
+                    "label_txt_agrees": True,   # no label.txt in this dataset
+                    "label_txt_empty": False,
+                    "url": "",
+                    "registered_domain": "",
+                    "language": "",
+                    "date": "",                 # collected March-May 2018 (dataset level)
+                    **image_info(img),
+                })
+    return rows
 
 
 def save_class_chart(df: pd.DataFrame) -> None:
@@ -149,7 +178,13 @@ def main() -> None:
             "legitimate": "folder class 'legitimate' (ID prefix L)",
             "phishing": "any other folder class: a brand name (trainval) or 'phish' (official test, brand hidden)",
         },
-        "phish_iris": "pending download",
+        "phish_iris": {
+            "source": "class folder name; Kaggle mirror (saurabhshahane/phishiris) of the 2018 dataset",
+            "legitimate": "class 'other' (described by the dataset authors as legitimate pages)",
+            "phishing": "the 14 brand classes: adobe, alibaba, amazon, apple, boa, chase, dhl, dropbox, "
+                        "facebook, linkedin, microsoft, paypal, wellsfargo, yahoo",
+            "official_split": "folder 'val' is the official test set",
+        },
     }
     (PROCESSED / "label_mapping.json").write_text(json.dumps(mapping, indent=2))
 
