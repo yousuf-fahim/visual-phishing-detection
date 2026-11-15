@@ -16,11 +16,9 @@ Each entry: what came up, the options, what I chose, and how to change it.
 - **Chose:** the initial commit goes on `main`. Each later phase gets its own branch (`feat/phase-1-data-audit`, and so on), committed locally. Nothing is pushed or merged, since there's no remote and creating a GitHub repo is your call.
 - **To change:** create the GitHub repo, `git remote add origin <url>`, `git push -u origin main`, then push each phase branch and open PRs.
 
-## Q3 (Phase 0): the project lives in OneDrive
+## Q3 (Phase 0): OneDrive (resolved)
 
-- **What came up:** the folder is under OneDrive, so `.venv` (thousands of files, ~1 GB) and later the datasets and models will be synced. That can slow OneDrive down or lock files while it syncs.
-- **Chose:** left everything where it is, because moving it would change files outside the project.
-- **To change:** right-click `.venv` and `data/` in Explorer and choose "Free up space" / exclude them from sync, or move the project to a non-synced folder such as `C:\dev\phishing-kit`.
+- Fahim confirmed this folder is under OneDrive but not synced, so no action is needed.
 
 ## Note: OpenCV installed twice
 
